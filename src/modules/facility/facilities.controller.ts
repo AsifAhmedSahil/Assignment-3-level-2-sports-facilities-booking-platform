@@ -2,49 +2,51 @@ import catchAsync from "../../utils/catchAsync";
 import { facilitiesServices } from "./facilities.service";
 
 const createFacility = catchAsync(async (req, res) => {
+  const result = await facilitiesServices.createFacilityIntoDB(req.body);
 
-    const result = await facilitiesServices.createFacilityIntoDB(req.body)
-
-
-    res.status(200).json({
-        success:true,
-        statusCode: 200,
-        message:"Facilities Created Successfully",
-        data:result
-    })
-
+  res.status(200).json({
+    success: true,
+    statusCode: 200,
+    message: "Facilities Created Successfully",
+    data: result,
+  });
 });
 
 const getAllFacility = catchAsync(async (req, res) => {
+  const result = await facilitiesServices.getAllFacilityFromDB();
 
-    const result = await facilitiesServices.getAllFacilityFromDB()
-
-
-    res.status(200).json({
-        success:true,
-        statusCode: 200,
-        message:"All Facilities retrived Successfully",
-        data:result
-    })
-
+  res.status(200).json({
+    success: true,
+    statusCode: 200,
+    message: "All Facilities retrived Successfully",
+    data: result,
+  });
 });
 
 const updateFacility = catchAsync(async (req, res) => {
-    const {id} = req.params
-    // console.log(object)
-    const result = await facilitiesServices.updateFacilityIntoDB(id,req.body)
-
+  try {
+    const { id } = req.params;
+    const result = await facilitiesServices.updateFacilityIntoDB(id, req.body);
 
     res.status(200).json({
-        success:true,
-        statusCode: 200,
-        message:" Facilities updated Successfully",
-        data:result
-    })
+      success: true,
+      statusCode: 200,
+      message: " Facilities updated Successfully",
+      data: result,
+    });
+  } catch (error:any) {
+        res.status(200).json({
+        success: false,
+        statusCode: 404,
+        message: " Facilities updated Error",
+        error:error.message
+        
+  })
+}
 });
 
 export const facilitiesController = {
-    createFacility,
-    getAllFacility,
-    updateFacility
-}
+  createFacility,
+  getAllFacility,
+  updateFacility,
+};
