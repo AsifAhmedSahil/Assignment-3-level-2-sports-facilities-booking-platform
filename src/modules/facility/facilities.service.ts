@@ -20,10 +20,20 @@ const updateFacilityIntoDB = async(id:string , payload:Partial<TFacility>) =>{
    
     return result
 }
+const delteFacilityFromDB = async(id:string ) =>{
+
+    const deleteFacilities = await Facilities.findByIdAndUpdate(id,{isDeleted:true},{new:true})
+    if(!deleteFacilities){
+        throw new Error("Failed to delete facilities from database")
+    }
+   
+    return deleteFacilities
+}
 
 export const facilitiesServices = {
      createFacilityIntoDB,
      getAllFacilityFromDB,
-     updateFacilityIntoDB
+     updateFacilityIntoDB,
+     delteFacilityFromDB
 
 }

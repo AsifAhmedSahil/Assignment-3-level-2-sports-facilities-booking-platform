@@ -44,9 +44,31 @@ const updateFacility = catchAsync(async (req, res) => {
   })
 }
 });
+const deleteFacility = catchAsync(async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await facilitiesServices.delteFacilityFromDB(id);
+
+    res.status(200).json({
+      success: true,
+      statusCode: 200,
+      message: " Facilities Deleted Successfully",
+      data: result,
+    });
+  } catch (error:any) {
+        res.status(200).json({
+        success: false,
+        statusCode: 404,
+        message: " Failed to delete facilities !",
+        error:error.message
+        
+  })
+}
+});
 
 export const facilitiesController = {
   createFacility,
   getAllFacility,
   updateFacility,
+  deleteFacility
 };
