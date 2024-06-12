@@ -15,6 +15,6 @@ app.get('/', (req:Request, res:Response) => {
 })
 
 // not found route
-app.use(notFound)
+// app.use(notFound)
 
 export default app

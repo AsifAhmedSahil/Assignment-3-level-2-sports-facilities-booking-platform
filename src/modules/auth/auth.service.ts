@@ -24,6 +24,7 @@ const login = async (payload: TLoginUser) => {
 
   // check user existance
   const user = await User.findOne({ email: payload.email }).select("+password");
+  console.log(!user)
   if (!user) {
     throw new Error("User Not Found!");
   }
