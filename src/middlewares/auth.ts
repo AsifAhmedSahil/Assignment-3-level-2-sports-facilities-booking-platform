@@ -5,8 +5,9 @@ import jwt, { JwtPayload } from 'jsonwebtoken'
 import config from "../config";
 import { User } from "../modules/user/user.model";
 import { USER_Role } from "../modules/user/user.contant";
+import { TUser_Role } from "../modules/user/user.interface";
 
-export const auth = (...requiredRoles :(keyof typeof USER_Role)[]) =>{
+export const auth = (...requiredRoles :TUser_Role[]) =>{
     return catchAsync(async(req:Request,res:Response,next:NextFunction) =>{
         const token = req.headers.authorization;
 
@@ -25,8 +26,12 @@ export const auth = (...requiredRoles :(keyof typeof USER_Role)[]) =>{
         if(!user){
             throw new AppError(404,"User not found!")
         }
+        console.log("required roles",requiredRoles)
+        console.log("roles",role)
+        console.log(requiredRoles.includes(role))
+        console.log(!requiredRoles.includes(role))
 
-        if(!requiredRoles.includes(role)){
+        if(requiredRoles && !requiredRoles.includes(role)){
             throw new AppError(401,"You are not authorized!")
         }
 

@@ -1,3 +1,4 @@
+import { USER_Role } from "./user.contant";
 
 export interface TUser  {
     name:string;
@@ -9,3 +10,4 @@ export interface TUser  {
 
 }
 
+export type TUser_Role = keyof typeof USER_Role

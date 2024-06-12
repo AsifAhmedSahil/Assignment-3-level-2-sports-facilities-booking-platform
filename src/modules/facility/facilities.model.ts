@@ -11,7 +11,8 @@ import { boolean } from "zod";
     },
     description:{
         type:String,
-        required:[true,'description is required']
+        required:[true,'description is required'],
+        unique:true
     },
     pricePerHour:{
         type:Number,

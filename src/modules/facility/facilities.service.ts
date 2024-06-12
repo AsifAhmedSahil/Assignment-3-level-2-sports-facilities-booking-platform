@@ -4,7 +4,7 @@ import { Facilities } from "./facilities.model"
 const createFacilityIntoDB = async(payload:TFacility) =>{
 
     const result = await Facilities.create(payload)
-    return result
+    return result 
 }
 
 const getAllFacilityFromDB = async() =>{
