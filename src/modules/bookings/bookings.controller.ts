@@ -1,44 +1,50 @@
 import catchAsync from "../../utils/catchAsync";
 import { bookingServices } from "./bookings.service";
 
-const createBookingController = catchAsync(async(req,res) =>{
-    const result = await bookingServices.createBooking(req.body)
+const createBookingController = catchAsync(async (req, res) => {
+  const result = await bookingServices.createBooking(req.body);
+
+  res.status(200).json({
+    success: true,
+    statusCode: 200,
+    message: "Booking created successfully",
+    data: result,
+  });
+});
+const getAllBookingController = catchAsync(async (req, res) => {
+  try {
+    const result = await bookingServices.getAllBooking();
 
     res.status(200).json({
-        success:true,
-        statusCode: 200,
-        message: "Booking created successfully",
-        data:result
-    })
-
-})
-const getAllBookingController = catchAsync(async(req,res) =>{
-    const result = await bookingServices.getAllBooking()
-
+      success: true,
+      statusCode: 200,
+      message: "All Booking Retrived successfully",
+      data: result,
+    });
+  } catch (error) {
     res.status(200).json({
-        success:true,
-        statusCode: 200,
-        message: "All Booking Retrived successfully",
-        data:result
-    })
+      success: false,
+      statusCode: 404,
+      message: "No Data Found",
+      data: [],
+    });
+  }
+});
+const deleteBookingController = catchAsync(async (req, res) => {
+  const { id } = req.params;
 
-})
-const deleteBookingController = catchAsync(async(req,res) =>{
-    const {id} = req.params;
+  const result = await bookingServices.deleteBookings(id);
 
-    const result = await bookingServices.deleteBookings(id)
-
-    res.status(200).json({
-        success:true,
-        statusCode: 200,
-        message: "All Booking Retrived successfully",
-        data:result
-    })
-
-})
+  res.status(200).json({
+    success: true,
+    statusCode: 200,
+    message: "All Booking Retrived successfully",
+    data: result,
+  });
+});
 
 export const bookingControllers = {
-    createBookingController,
-    getAllBookingController,
-    deleteBookingController
-}
+  createBookingController,
+  getAllBookingController,
+  deleteBookingController,
+};

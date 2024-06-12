@@ -13,7 +13,8 @@ const createFacility = catchAsync(async (req, res) => {
 });
 
 const getAllFacility = catchAsync(async (req, res) => {
-  const result = await facilitiesServices.getAllFacilityFromDB();
+  try {
+    const result = await facilitiesServices.getAllFacilityFromDB();
 
   res.status(200).json({
     success: true,
@@ -21,6 +22,15 @@ const getAllFacility = catchAsync(async (req, res) => {
     message: "All Facilities retrived Successfully",
     data: result,
   });
+    
+  } catch (error) {
+    res.status(200).json({
+      success: false,
+      statusCode: 404,
+      message: "No Data Found",
+      data: [],
+    });
+  }
 });
 
 const updateFacility = catchAsync(async (req, res) => {
@@ -35,13 +45,12 @@ const updateFacility = catchAsync(async (req, res) => {
       data: result,
     });
   } catch (error:any) {
-        res.status(200).json({
-        success: false,
-        statusCode: 404,
-        message: " Facilities updated Error",
-        error:error.message
-        
-  })
+    res.status(200).json({
+      success: false,
+      statusCode: 404,
+      message: "No Data Found",
+      data: [],
+    });
 }
 });
 const deleteFacility = catchAsync(async (req, res) => {
