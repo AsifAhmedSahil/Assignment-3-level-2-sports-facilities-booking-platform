@@ -21,10 +21,6 @@ const createBooking = async(payload:TBooking) =>{
 
     const updatePayloadWithPayableAmount = {...payload,payableAmount,isBooked}
 
-    
-    
-    
-    
     const result = (await Booking.create(updatePayloadWithPayableAmount)).populate("user")
     return result
 
