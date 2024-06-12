@@ -17,10 +17,12 @@ const bookingModel = new Schema<TBooking>({
     },
     user:{
         type: Schema.Types.ObjectId,
+        ref:"User",
         required: [true,"User id is required"]
     },
     facility:{
         type: Schema.Types.ObjectId,
+        ref:"Facilities",
         required: [true,"Which facility you want is required"]
     },
     payableAmount:{
