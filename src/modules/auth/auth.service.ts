@@ -1,7 +1,9 @@
+import config from "../../config"
 import {  TUser } from "../user/user.interface"
 import { User } from "../user/user.model"
 import { TLoginUser } from "./auth.interface"
 import { isPasswordMatched } from "./auth.util"
+import jwt from 'jsonwebtoken'
 
 
 const signup = async(payload:TUser) =>{
@@ -34,6 +36,19 @@ const login = async(payload :TLoginUser) =>{
     if(!passwordMatch){
         throw new Error("Password not matched!")
     }
+
+    // jwt payload create
+    const jwtPayload = {
+        email:user.email,
+        role:user.role
+    }
+
+    const accessToken = jwt.sign(jwtPayload,config.jwt_access_secret as string,{
+        expiresIn:config.jwt_access_expires 
+    })
+    const refreshToken = jwt.sign(jwtPayload,config.jwt_refresh_secret as string,{
+        expiresIn:config.jwt_refresh_expires 
+    })
 }
 
 export const userServices = {
