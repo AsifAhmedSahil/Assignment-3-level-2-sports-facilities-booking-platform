@@ -7,7 +7,7 @@ const createFacility = catchAsync(async (req, res) => {
   res.status(200).json({
     success: true,
     statusCode: 200,
-    message: "Facilities Created Successfully",
+    message: "Facility added successfully",
     data: result,
   });
 });
@@ -19,7 +19,7 @@ const getAllFacility = catchAsync(async (req, res) => {
   res.status(200).json({
     success: true,
     statusCode: 200,
-    message: "All Facilities retrived Successfully",
+    message: "All Facilities retrieved Successfully",
     data: result,
   });
     
