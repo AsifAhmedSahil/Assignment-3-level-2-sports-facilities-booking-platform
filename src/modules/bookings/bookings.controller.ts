@@ -1,3 +1,4 @@
+import { string } from "zod";
 import config from "../../config";
 import AppError from "../../errors/AppError";
 import catchAsync from "../../utils/catchAsync";
@@ -12,18 +13,18 @@ const createBookingController = catchAsync(async (req, res) => {
     }
 
     const verifiedToken = jwt.verify(token as string , config.jwt_access_secret as string)
-        console.log(verifiedToken)
+        // console.log(verifiedToken)
 
         const {email} = verifiedToken as JwtPayload
-        console.log("email",email)
+        // console.log("email",email)
         const userinfo = await User.findOne({email:email})
-        console.log(userinfo?._id ,"user id decoded")
+        // console.log(userinfo?._id ,"user id decoded")
 
         const newData = {
           ...req.body,
           user : userinfo?._id
         }
-        console.log("new data",newData)
+        // console.log("new data",newData)
 
   const result = await bookingServices.createBooking(newData);
 
@@ -61,19 +62,30 @@ const getSingleBookingController = catchAsync(async (req, res) => {
     }
 
     const verifiedToken = jwt.verify(token as string , config.jwt_access_secret as string)
-        console.log(verifiedToken)
+        // console.log(verifiedToken)
 
         const {email} = verifiedToken as JwtPayload
-        console.log("email",email)
+        console.log("email ",email)
 
-    const result = await bookingServices.getSingleUserBookings(email);
+        const user = await User.findOne({email:email})
+        const userId = user?._id.toString()
 
-    res.status(200).json({
-      success: true,
-      statusCode: 200,
-      message: "Specific User Retrived successfully",
-      data: [],
-    });
+        
+
+        
+
+    if(userId){
+      const result = await bookingServices.getSingleUserBookings(userId);
+      console.log("result from controller boking",result)
+      res.status(200).json({
+        success: true,
+        statusCode: 200,
+        message: "Specific User Bookings Retrived successfully",
+        data: result,
+      });
+    }
+
+    
   } catch (error) {
     res.status(200).json({
       success: false,

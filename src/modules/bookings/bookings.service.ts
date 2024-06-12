@@ -31,10 +31,11 @@ const getAllBooking = async() =>{
     return result
 
 }
-const getSingleUserBookings = async(payload:string) =>{
+const getSingleUserBookings = async(id:string) =>{
     // console.log(payload ,"i am from service")
-    const result = await Booking.findOne({email: payload})
-    console.log(result)
+    const result = await Booking.find({user: id})
+    return result
+    // console.log(result)
 }
 
 const deleteBookings = async(id:string) =>{
