@@ -19,6 +19,7 @@ const loginController = catchAsync(async (req, res) => {
     console.log("result",result)
 
     const {accessToken,refreshToken} = result
+    
 
     res.cookie("refreshToken",refreshToken,{
         httpOnly:true,
