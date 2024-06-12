@@ -56,7 +56,7 @@ const login = async(payload :TLoginUser) =>{
     }
 }
 
-export const userServices = {
+export const authServices = {
     signup,
     login
 }
