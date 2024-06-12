@@ -1,8 +1,31 @@
+import config from "../../config";
+import AppError from "../../errors/AppError";
 import catchAsync from "../../utils/catchAsync";
+import { User } from "../user/user.model";
 import { bookingServices } from "./bookings.service";
+import jwt, { JwtPayload } from 'jsonwebtoken'
 
 const createBookingController = catchAsync(async (req, res) => {
-  const result = await bookingServices.createBooking(req.body);
+  const token = req.headers.authorization
+    if(!token){
+      throw new AppError(401,"Unauthorized users!")
+    }
+
+    const verifiedToken = jwt.verify(token as string , config.jwt_access_secret as string)
+        console.log(verifiedToken)
+
+        const {email} = verifiedToken as JwtPayload
+        console.log("email",email)
+        const userinfo = await User.findOne({email:email})
+        console.log(userinfo?._id ,"user id decoded")
+
+        const newData = {
+          ...req.body,
+          user : userinfo?._id
+        }
+        console.log("new data",newData)
+
+  const result = await bookingServices.createBooking(newData);
 
   res.status(200).json({
     success: true,
@@ -30,6 +53,36 @@ const getAllBookingController = catchAsync(async (req, res) => {
     });
   }
 });
+const getSingleBookingController = catchAsync(async (req, res) => {
+  try {
+    const token = req.headers.authorization
+    if(!token){
+      throw new AppError(401,"Unauthorized users!")
+    }
+
+    const verifiedToken = jwt.verify(token as string , config.jwt_access_secret as string)
+        console.log(verifiedToken)
+
+        const {email} = verifiedToken as JwtPayload
+        console.log("email",email)
+
+    const result = await bookingServices.getSingleUserBookings(email);
+
+    res.status(200).json({
+      success: true,
+      statusCode: 200,
+      message: "Specific User Retrived successfully",
+      data: [],
+    });
+  } catch (error) {
+    res.status(200).json({
+      success: false,
+      statusCode: 404,
+      message: "No Data Found",
+      data: [],
+    });
+  }
+});
 const deleteBookingController = catchAsync(async (req, res) => {
   const { id } = req.params;
 
@@ -46,5 +99,6 @@ const deleteBookingController = catchAsync(async (req, res) => {
 export const bookingControllers = {
   createBookingController,
   getAllBookingController,
+  getSingleBookingController,
   deleteBookingController,
 };

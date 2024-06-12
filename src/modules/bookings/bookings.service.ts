@@ -1,4 +1,5 @@
 import { Facilities } from "../facility/facilities.model";
+import { User } from "../user/user.model";
 import { TBooking } from "./bookings.interface"
 import { Booking } from "./bookings.model"
 
@@ -30,6 +31,11 @@ const getAllBooking = async() =>{
     return result
 
 }
+const getSingleUserBookings = async(payload:string) =>{
+    // console.log(payload ,"i am from service")
+    const result = await Booking.findOne({email: payload})
+    console.log(result)
+}
 
 const deleteBookings = async(id:string) =>{
     const result = await Booking.findByIdAndUpdate(id,{isBooked:"canceled"},{new:true})
@@ -40,5 +46,6 @@ const deleteBookings = async(id:string) =>{
 export const bookingServices = {
     createBooking,
     getAllBooking,
-    deleteBookings
+    deleteBookings,
+    getSingleUserBookings
 }
