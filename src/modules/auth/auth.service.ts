@@ -49,8 +49,14 @@ const login = async(payload :TLoginUser) =>{
     const refreshToken = jwt.sign(jwtPayload,config.jwt_refresh_secret as string,{
         expiresIn:config.jwt_refresh_expires 
     })
+
+    return {
+        accessToken,
+        refreshToken
+    }
 }
 
 export const userServices = {
-    signup
+    signup,
+    login
 }
