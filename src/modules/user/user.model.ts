@@ -17,7 +17,7 @@ const userModel = new Schema<TUser>({
         required: [true,"password must be 8 characters"]
     },
     phone:{
-        type:Number
+        type:String
     },
     role:{
         type: String,

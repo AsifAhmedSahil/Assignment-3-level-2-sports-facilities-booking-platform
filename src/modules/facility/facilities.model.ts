@@ -1,5 +1,6 @@
 import { Schema, model } from "mongoose";
 import { TFacility } from "./facilities.interface";
+import { boolean } from "zod";
 
 
  const facilitiesModel = new Schema<TFacility>({
@@ -21,7 +22,7 @@ import { TFacility } from "./facilities.interface";
         required:[true,'Location is required']
     },
     isDeleted:{
-        type:String,
+        type:Boolean,
         default:false
     }
 })
