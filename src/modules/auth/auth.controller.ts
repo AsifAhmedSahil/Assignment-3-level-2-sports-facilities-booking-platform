@@ -9,7 +9,7 @@ const signupController = catchAsync(async (req, res) => {
     res.status(200).json({
       success: true,
       statusCode: 200,
-      message: "Sign Up Successfully",
+      message: "User Registered Successfully",
       data: result,
     });
   });
@@ -18,7 +18,7 @@ const loginController = catchAsync(async (req, res) => {
     const result = await authServices.login(req.body);
     console.log("result",result)
 
-    const {accessToken,refreshToken} = result
+    const {accessToken,refreshToken,user} = result
     
 
     res.cookie("refreshToken",refreshToken,{
@@ -30,10 +30,9 @@ const loginController = catchAsync(async (req, res) => {
     res.status(200).json({
       success: true,
       statusCode: 200,
-      message: "User Logged Successfully",
-      data: {
-        accessToken
-      },
+      message: "User Logged In Successfully",
+      token:accessToken,
+      data:user,
     });
   });
 
