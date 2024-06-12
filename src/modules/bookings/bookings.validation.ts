@@ -8,8 +8,8 @@ const createBookingValidation = z.object({
         endTime:z.string(),
         user:z.string(),
         facility:z.string(),
-        payableAmount:z.number(),
-        isBooked:z.enum(['confirmed', "unconfirmed", "canceled"])
+        payableAmount:z.number().optional(),
+        isBooked:z.enum(['confirmed', "unconfirmed", "canceled"]).optional()
     })
 })
 
