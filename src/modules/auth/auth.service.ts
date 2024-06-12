@@ -12,7 +12,7 @@ const signup = async (payload: TUser) => {
     throw new Error("User Already Exists!");
   }
 
-  payload.role = "user";
+//   payload.role = "user";
 
   // console.log(payload)
   const result = await User.create(payload);
