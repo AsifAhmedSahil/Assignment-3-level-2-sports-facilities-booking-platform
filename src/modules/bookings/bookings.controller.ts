@@ -23,8 +23,22 @@ const getAllBookingController = catchAsync(async(req,res) =>{
     })
 
 })
+const deleteBookingController = catchAsync(async(req,res) =>{
+    const {id} = req.params;
+
+    const result = await bookingServices.deleteBookings(id)
+
+    res.status(200).json({
+        success:true,
+        statusCode: 200,
+        message: "All Booking Retrived successfully",
+        data:result
+    })
+
+})
 
 export const bookingControllers = {
     createBookingController,
-    getAllBookingController
+    getAllBookingController,
+    deleteBookingController
 }

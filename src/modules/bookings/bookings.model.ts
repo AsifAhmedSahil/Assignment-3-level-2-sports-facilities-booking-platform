@@ -29,7 +29,7 @@ const bookingModel = new Schema<TBooking>({
         type:Number,
 
     },
-    isBooking:{
+    isBooked:{
         type:String,
         enum:['confirmed', "unconfirmed", "canceled"]
     }

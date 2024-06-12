@@ -7,5 +7,5 @@ export interface TBooking {
     user:Types.ObjectId;
     facility:Types.ObjectId;
     payableAmount:number;
-    isBooking: 'confirmed'| "unconfirmed"| "canceled"
+    isBooked: 'confirmed'| "unconfirmed"| "canceled"
 }

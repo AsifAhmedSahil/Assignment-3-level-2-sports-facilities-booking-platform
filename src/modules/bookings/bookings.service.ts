@@ -12,7 +12,13 @@ const getAllBooking = async() =>{
 
 }
 
+const deleteBookings = async(id:string) =>{
+    const result = await Booking.findByIdAndUpdate(id,{isBooked:"canceled"},{new:true})
+    return result
+}
+
 export const bookingServices = {
     createBooking,
-    getAllBooking
+    getAllBooking,
+    deleteBookings
 }
