@@ -27,6 +27,7 @@ const createBookingController = catchAsync(async (req, res) => {
         // console.log("new data",newData)
 
   const result = await bookingServices.createBooking(newData);
+  
 
   res.status(200).json({
     success: true,
@@ -103,7 +104,7 @@ const deleteBookingController = catchAsync(async (req, res) => {
   res.status(200).json({
     success: true,
     statusCode: 200,
-    message: "All Booking Retrived successfully",
+    message: " Booking cancelled successfully",
     data: result,
   });
 });
