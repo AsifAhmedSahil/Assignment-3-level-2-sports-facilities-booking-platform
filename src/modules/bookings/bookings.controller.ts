@@ -6,9 +6,11 @@ import { User } from "../user/user.model";
 import { bookingServices } from "./bookings.service";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { Booking } from "./bookings.model";
+import { NextFunction } from "express";
 
-const createBookingController = catchAsync(async (req, res) => {
-  const tokenWithBearer = req.headers.authorization;
+const createBookingController = catchAsync(async (req, res,next:NextFunction) => {
+  try {
+    const tokenWithBearer = req.headers.authorization;
   if (!tokenWithBearer) {
     throw new AppError(401, "Unauthorized users!");
   }
@@ -45,6 +47,9 @@ const createBookingController = catchAsync(async (req, res) => {
       message: "Booking created successfully",
       data: result,
     });
+  }
+  } catch (error) {
+    next(error)
   }
 });
 const getAllBookingController = catchAsync(async (req, res) => {

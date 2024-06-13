@@ -8,6 +8,7 @@ import { USER_Role } from "../user/user.contant";
 const router = express.Router();
 
 router.post("/",auth(USER_Role.admin),validationSchema(facilitiesValidaions.createFacilitiesValidation), facilitiesController.createFacility);
+
 router.get("/", facilitiesController.getAllFacility);
 router.put("/:id",auth(USER_Role.admin), facilitiesController.updateFacility);
 router.delete("/:id",auth(USER_Role.admin), facilitiesController.deleteFacility);
