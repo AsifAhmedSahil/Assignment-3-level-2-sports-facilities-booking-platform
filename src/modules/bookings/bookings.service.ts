@@ -32,10 +32,10 @@ const getAllBooking = async() =>{
 
 }
 const getSingleUserBookings = async(id:string) =>{
-    // console.log(payload ,"i am from service")
+    console.log(id ,"i am from service")
     const result = await Booking.find({user: id})
     return result
-    // console.log(result)
+    // console.log(result,"from single user data get service")
 }
 
 const deleteBookings = async(id:string) =>{

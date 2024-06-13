@@ -16,7 +16,7 @@ const signupController = catchAsync(async (req, res) => {
 const loginController = catchAsync(async (req, res) => {
     
     const result = await authServices.login(req.body);
-    console.log("result",result)
+    console.log("result from login",result)
 
     const {accessToken,refreshToken,user} = result
     

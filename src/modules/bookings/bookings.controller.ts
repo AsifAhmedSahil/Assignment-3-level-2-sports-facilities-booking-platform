@@ -7,13 +7,20 @@ import { bookingServices } from "./bookings.service";
 import jwt, { JwtPayload } from 'jsonwebtoken'
 
 const createBookingController = catchAsync(async (req, res) => {
-  const token = req.headers.authorization
+  const tokenWithBearer = req.headers.authorization
+  if(!tokenWithBearer){
+    throw new AppError(401,"Unauthorized users!")
+  }
+  if(tokenWithBearer){
+    const token = tokenWithBearer.split(" ")[1]
+    console.log("after cut bearer",token)
+
     if(!token){
       throw new AppError(401,"Unauthorized users!")
     }
 
     const verifiedToken = jwt.verify(token as string , config.jwt_access_secret as string)
-        // console.log(verifiedToken)
+        console.log(verifiedToken,"from boking contro")
 
         const {email} = verifiedToken as JwtPayload
         // console.log("email",email)
@@ -27,7 +34,7 @@ const createBookingController = catchAsync(async (req, res) => {
         // console.log("new data",newData)
 
   const result = await bookingServices.createBooking(newData);
-  
+      
 
   res.status(200).json({
     success: true,
@@ -35,6 +42,7 @@ const createBookingController = catchAsync(async (req, res) => {
     message: "Booking created successfully",
     data: result,
   });
+}
 });
 const getAllBookingController = catchAsync(async (req, res) => {
   try {
@@ -57,7 +65,15 @@ const getAllBookingController = catchAsync(async (req, res) => {
 });
 const getSingleBookingController = catchAsync(async (req, res) => {
   try {
-    const token = req.headers.authorization
+    const tokenWithBearer = req.headers.authorization
+
+    if(!tokenWithBearer){
+      throw new AppError(401,"Unauthorized users!")
+    }
+    if(tokenWithBearer){
+      const token = tokenWithBearer.split(" ")[1]
+    console.log("after cut bearer",token)
+      
     if(!token){
       throw new AppError(401,"Unauthorized users!")
     }
@@ -85,7 +101,7 @@ const getSingleBookingController = catchAsync(async (req, res) => {
         data: result,
       });
     }
-
+  }
     
   } catch (error) {
     res.status(200).json({

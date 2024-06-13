@@ -38,8 +38,8 @@ export const auth = (...requiredRoles :TUser_Role[]) =>{
         if(!user){
             throw new AppError(404,"User not found!")
         }
-        // console.log("required roles",requiredRoles)
-        // console.log("roles",role)
+        console.log("required roles",requiredRoles)
+        console.log("roles",role)
         // console.log(requiredRoles.includes(role))
         // console.log(!requiredRoles.includes(role))
 
