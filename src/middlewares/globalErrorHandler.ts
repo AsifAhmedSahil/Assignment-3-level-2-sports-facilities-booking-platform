@@ -6,7 +6,7 @@ const globalErrorHandler :ErrorRequestHandler = async(err,req,res,next) =>{
 
     let statusCode = 500;
     let message = "something went wrong";
-    const errorSources: TErrorSources =[
+    let errorSources: TErrorSources =[
         {
             path:"",
             message:"something wrong!"
@@ -15,14 +15,15 @@ const globalErrorHandler :ErrorRequestHandler = async(err,req,res,next) =>{
 
     if(err.name === 'ValidationError'){
         const simplified = handleValidationError(err)
+        errorSources = simplified.errorSources
         console.log(simplified)
     }
 
 
     res.status(500).json({
         success: false,
-        message:"something went wrong",
-        err:err 
+        message:err.name,
+        errorSources
     })
 
 }
