@@ -125,9 +125,22 @@ const deleteBookingController = catchAsync(async (req, res) => {
   });
 });
 
+const checkAvaiability = catchAsync(async(req,res) =>{
+  console.log("check avaiable sllots")
+  const result = await bookingServices.checkSlots()
+  res.status(200).json({
+    success: true,
+    statusCode: 200,
+    message: " avaiable slots here",
+    data: result,
+  });
+  // console.log("check *****************")
+})
+
 export const bookingControllers = {
   createBookingController,
   getAllBookingController,
   getSingleBookingController,
   deleteBookingController,
+  checkAvaiability
 };

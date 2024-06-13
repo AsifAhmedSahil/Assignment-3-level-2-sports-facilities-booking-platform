@@ -43,10 +43,16 @@ const deleteBookings = async(id:string) =>{
     return result
 }
 
+const checkSlots = async() =>{
+    console.log("check kar")
+    return {}
+}
+
 
 export const bookingServices = {
     createBooking,
     getAllBooking,
     deleteBookings,
-    getSingleUserBookings
+    getSingleUserBookings,
+    checkSlots
 }
