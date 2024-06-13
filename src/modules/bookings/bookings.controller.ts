@@ -5,6 +5,7 @@ import catchAsync from "../../utils/catchAsync";
 import { User } from "../user/user.model";
 import { bookingServices } from "./bookings.service";
 import jwt, { JwtPayload } from "jsonwebtoken";
+import { Booking } from "./bookings.model";
 
 const createBookingController = catchAsync(async (req, res) => {
   const tokenWithBearer = req.headers.authorization;
@@ -153,6 +154,8 @@ const checkAvaiability = catchAsync(async (req, res) => {
 
   
 
+  
+
   const result = await bookingServices.checkSlots(date);
   res.status(200).json({
     success: true,
@@ -160,7 +163,7 @@ const checkAvaiability = catchAsync(async (req, res) => {
     message: " avaiable slots here",
     data: result,
   });
-  // console.log("check *****************")
+  
 });
 
 export const bookingControllers = {
