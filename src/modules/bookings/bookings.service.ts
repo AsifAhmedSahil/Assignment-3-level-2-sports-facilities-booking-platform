@@ -64,7 +64,7 @@ const checkSlots = async(date:string) =>{
     const minutesToHours = (minutes :number) => {
         const hours = Math.floor(minutes % 60);
         console.log(hours,"hours")
-        // const mins = minutes / 60;
+        // const mins = minutes % 60;
         // console.log(mins,"mins")
         // return `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}`;
         return `${hours.toString().padStart(2, '0')}:00`;
@@ -86,14 +86,14 @@ const checkSlots = async(date:string) =>{
     // calculate avaiable slots for this day
     let previousEndTime =startDay;
     for(const slot of bookedTimeSlots){
-        console.log("check loop work how much time")
+        console.log("check loop",slot.startTime)
         if(parseInt(slot.startTime) > previousEndTime){
             avaiableSlots.push({
                 startTime: minutesToHours(previousEndTime),
                 endTime: minutesToHours(parseInt(slot.startTime)) 
             })
         }
-        console.log
+        
         previousEndTime = parseInt(slot.endTime)
     }
    
