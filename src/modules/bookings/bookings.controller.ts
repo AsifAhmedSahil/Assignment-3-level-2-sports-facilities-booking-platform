@@ -94,7 +94,8 @@ const getSingleBookingController = catchAsync(async (req, res) => {
       const userId = user?._id.toString();
 
       if (userId) {
-        const result = await bookingServices.getSingleUserBookings(userId);
+        try {
+          const result = await bookingServices.getSingleUserBookings(userId);
         console.log("result from controller boking", result);
         res.status(200).json({
           success: true,
@@ -102,6 +103,14 @@ const getSingleBookingController = catchAsync(async (req, res) => {
           message: "Specific User Bookings Retrived successfully",
           data: result,
         });
+        } catch (error) {
+          res.status(200).json({
+            success: false,
+            statusCode: 404,
+            message: "No Data Found",
+            data: [],
+          });
+        }
       }
     }
   } catch (error) {
