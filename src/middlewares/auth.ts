@@ -9,7 +9,16 @@ import { TUser_Role } from "../modules/user/user.interface";
 
 export const auth = (...requiredRoles :TUser_Role[]) =>{
     return catchAsync(async(req:Request,res:Response,next:NextFunction) =>{
-        const token = req.headers.authorization;
+        const tokenWithBearer = req.headers.authorization;
+
+        if(!tokenWithBearer){
+            throw new AppError(401,"You are not authorized!")
+        }
+        if(tokenWithBearer){
+            const token = tokenWithBearer.split(" ")[1]
+            console.log("after cut bearer",token)
+            
+        
 
         if(!token){
             throw new AppError(401,"You are not authorized!")
@@ -17,6 +26,9 @@ export const auth = (...requiredRoles :TUser_Role[]) =>{
 
         const verifiedToken = jwt.verify(token as string , config.jwt_access_secret as string)
         console.log(verifiedToken)
+
+    
+
 
         const {role,email} = verifiedToken as JwtPayload
 
@@ -34,7 +46,7 @@ export const auth = (...requiredRoles :TUser_Role[]) =>{
         if(requiredRoles && !requiredRoles.includes(role)){
             throw new AppError(401,"You are not authorized!")
         }
-
+    }
         next()
     })
 }
