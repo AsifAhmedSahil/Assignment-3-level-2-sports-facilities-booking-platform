@@ -43,8 +43,8 @@ const deleteBookings = async(id:string) =>{
     return result
 }
 
-const checkSlots = async() =>{
-    console.log("check kar")
+const checkSlots = async(date: any) =>{
+    console.log("check kar",date)
     return {}
 }
 
