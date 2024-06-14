@@ -1,6 +1,7 @@
 import { Schema, model } from "mongoose";
 import { TFacility } from "./facilities.interface";
 import { boolean } from "zod";
+import AppError from "../../errors/AppError";
 
 
  const facilitiesModel = new Schema<TFacility>({
@@ -26,6 +27,15 @@ import { boolean } from "zod";
         type:Boolean,
         default:false
     }
+})
+
+facilitiesModel.pre("save",async function(next){
+    
+    const isExistsFacilities = await Facilities.findOne({name:this.name})
+    if(isExistsFacilities){
+        throw new AppError(401,"facilities already exists!")
+    }
+    next()
 })
 
 export const Facilities = model<TFacility>("Facilities",facilitiesModel)

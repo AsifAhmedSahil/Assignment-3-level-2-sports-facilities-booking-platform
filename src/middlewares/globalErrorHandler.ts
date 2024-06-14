@@ -3,11 +3,12 @@ import { TErrorSources } from "../interface/error.interface";
 import handleValidationError from "../errors/handleValidationError";
 import handleCastError from "../errors/handleCastError";
 import handleDuplicateError from "../errors/handleDuplicateError";
+import { ZodError } from "zod";
 
 const globalErrorHandler :ErrorRequestHandler = async(err,req,res,next) =>{
 
     let statusCode = 500;
-    let message = "something went wrong";
+    let message = err.message || "something went wrong";
     let errorSources: TErrorSources =[
         {
             path:"",
@@ -25,6 +26,10 @@ const globalErrorHandler :ErrorRequestHandler = async(err,req,res,next) =>{
     }else if(err.code === 11000){
         const simplified = handleDuplicateError(err)
         errorSources = simplified.errorSources
+    }
+
+    if(err instanceof ZodError){
+        console.log("zod error",err)
     }
 
     res.status(500).json({

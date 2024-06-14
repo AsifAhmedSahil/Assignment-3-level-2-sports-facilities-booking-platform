@@ -1,7 +1,14 @@
+import AppError from "../../errors/AppError";
 import catchAsync from "../../utils/catchAsync";
+import { Facilities } from "./facilities.model";
 import { facilitiesServices } from "./facilities.service";
 
 const createFacility = catchAsync(async (req, res) => {
+  // const {name} = req.body;
+  // const isfacilitiesExists = await Facilities.findOne({name:name})
+  // if(isfacilitiesExists){
+  //   throw new AppError(401,"Facilities already exists!")
+  // }
   const result = await facilitiesServices.createFacilityIntoDB(req.body);
 
   res.status(200).json({
