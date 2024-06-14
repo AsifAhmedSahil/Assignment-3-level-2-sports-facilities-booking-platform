@@ -147,18 +147,18 @@ const checkAvaiability = catchAsync(async (req, res) => {
   const todaysDate = new Date();
   // console.log(todaysDate,"todays date");
 
-  // if (date.toString() === todaysDate.toString()) {
-  //     const getTodayDate = (): string => {
-  //     const day = todaysDate.getDate().toString().padStart(2, "0");
-  //     const month = (todaysDate.getMonth() + 1).toString().padStart(2, "0");
-  //     const year = todaysDate.getFullYear().toString();
-  //     return `${year}-${month}-${day}`;
-  //   };
+  if (date.toString() === todaysDate.toString()) {
+      const getTodayDate = (): string => {
+      const day = todaysDate.getDate().toString().padStart(2, "0");
+      const month = (todaysDate.getMonth() + 1).toString().padStart(2, "0");
+      const year = todaysDate.getFullYear().toString();
+      return `${year}-${month}-${day}`;
+    };
 
-  //   const modifiedDate = getTodayDate();
-  //   console.log(modifiedDate,"modifieddate***********")
-  //   date = modifiedDate;
-  // } 
+    const modifiedDate = getTodayDate();
+    console.log(modifiedDate,"modifieddate***********")
+    date = modifiedDate;
+  } 
   // else {
   //     const fixDateFormat = (dateString: string): string => {
   //     const [day, month, year] = dateString.split("-");
