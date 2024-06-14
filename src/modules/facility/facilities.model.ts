@@ -3,39 +3,38 @@ import { TFacility } from "./facilities.interface";
 import { boolean } from "zod";
 import AppError from "../../errors/AppError";
 
+const facilitiesModel = new Schema<TFacility>({
+  name:{
+    type:String,
+    required:true ,
+    unique : true
+  },
+  description: {
+    type: String,
+    required: [true, "description is required"],
+    unique: true,
+  },
+  pricePerHour: {
+    type: Number,
+    required: [true, "Price is required"],
+  },
+  location: {
+    type: String,
+    required: [true, "Location is required"],
+  },
+  isDeleted: {
+    type: Boolean,
+    default: false,
+  },
+});
 
- const facilitiesModel = new Schema<TFacility>({
-    name:{
-        type:String,
-        required:[true,'name is required'],
-        unique:true
-    },
-    description:{
-        type:String,
-        required:[true,'description is required'],
-        unique:true
-    },
-    pricePerHour:{
-        type:Number,
-        required:[true,'Price is required']
-    },
-    location:{
-        type:String,
-        required:[true,'Location is required']
-    },
-    isDeleted:{
-        type:Boolean,
-        default:false
-    }
-})
+// facilitiesModel.pre("save",async function(next){
 
-facilitiesModel.pre("save",async function(next){
-    
-    const isExistsFacilities = await Facilities.findOne({name:this.name})
-    if(isExistsFacilities){
-        throw new AppError(401,"facilities already exists!")
-    }
-    next()
-})
+//     const isExistsFacilities = await Facilities.findOne({name:this.name})
+//     if(isExistsFacilities){
+//         throw new AppError(401,"facilities already exists!")
+//     }
+//     next()
+// })
 
-export const Facilities = model<TFacility>("Facilities",facilitiesModel)
+export const Facilities = model<TFacility>("Facilities", facilitiesModel);

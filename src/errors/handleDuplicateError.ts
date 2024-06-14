@@ -10,6 +10,7 @@ const handleDuplicateError = (err:any) =>{
         }
     ]
     return {
+        message:err.errmsg,
         errorSources
     }
 }

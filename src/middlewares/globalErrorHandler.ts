@@ -26,8 +26,11 @@ const globalErrorHandler :ErrorRequestHandler = async(err,req,res,next) =>{
         const simplified = handleCastError(err)
         errorSources = simplified.errorSources
     }else if(err.code === 11000){
+        console.log(err)
         const simplified = handleDuplicateError(err)
+        console.log(simplified,"message**********")
         errorSources = simplified.errorSources
+        message = simplified.message
     }
 
     if(err instanceof ZodError){
