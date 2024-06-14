@@ -1,6 +1,6 @@
-import AppError from "../../errors/AppError";
+
 import catchAsync from "../../utils/catchAsync";
-import { Facilities } from "./facilities.model";
+
 import { facilitiesServices } from "./facilities.service";
 
 const createFacility = catchAsync(async (req, res) => {
@@ -51,7 +51,7 @@ const updateFacility = catchAsync(async (req, res) => {
       message: " Facilities updated Successfully",
       data: result,
     });
-  } catch (error:any) {
+  } catch (error) {
     res.status(200).json({
       success: false,
       statusCode: 404,
@@ -71,12 +71,12 @@ const deleteFacility = catchAsync(async (req, res) => {
       message: " Facilities Deleted Successfully",
       data: result,
     });
-  } catch (error:any) {
+  } catch (error) {
         res.status(200).json({
         success: false,
         statusCode: 404,
         message: " Failed to delete facilities !",
-        error:error.message
+        
         
   })
 }

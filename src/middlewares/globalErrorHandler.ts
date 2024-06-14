@@ -9,7 +9,7 @@ import config from "../config";
 
 const globalErrorHandler :ErrorRequestHandler = async(err,req,res,next) =>{
 
-    let statusCode = 500;
+    
     let message = err.message || "something went wrong";
     let errorSources: TErrorSources =[
         {

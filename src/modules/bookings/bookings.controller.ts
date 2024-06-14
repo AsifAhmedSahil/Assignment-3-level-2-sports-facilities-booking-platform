@@ -1,11 +1,11 @@
-import { string } from "zod";
+
 import config from "../../config";
 import AppError from "../../errors/AppError";
 import catchAsync from "../../utils/catchAsync";
 import { User } from "../user/user.model";
 import { bookingServices } from "./bookings.service";
 import jwt, { JwtPayload } from "jsonwebtoken";
-import { Booking } from "./bookings.model";
+
 import { NextFunction } from "express";
 
 const createBookingController = catchAsync(async (req, res,next:NextFunction) => {
@@ -170,9 +170,12 @@ const checkAvaiability = catchAsync(async (req, res) => {
   //   console.log(date)
   // }
 
+  if(!date){
+    throw new Error("date is not define")
+  }
   
   
-  const result = await bookingServices.checkSlots(date);
+  const result = await bookingServices.checkSlots(date as string);
   console.log(result.length)
   res.status(200).json({
     success: true,

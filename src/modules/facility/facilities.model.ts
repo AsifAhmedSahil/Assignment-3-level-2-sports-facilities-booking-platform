@@ -1,7 +1,6 @@
 import { Schema, model } from "mongoose";
 import { TFacility } from "./facilities.interface";
-import { boolean } from "zod";
-import AppError from "../../errors/AppError";
+
 
 const facilitiesModel = new Schema<TFacility>({
   name:{

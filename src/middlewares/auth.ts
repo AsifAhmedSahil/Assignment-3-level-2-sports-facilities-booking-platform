@@ -4,7 +4,6 @@ import AppError from "../errors/AppError";
 import jwt, { JwtPayload } from 'jsonwebtoken'
 import config from "../config";
 import { User } from "../modules/user/user.model";
-import { USER_Role } from "../modules/user/user.contant";
 import { TUser_Role } from "../modules/user/user.interface";
 
 export const auth = (...requiredRoles :TUser_Role[]) =>{
