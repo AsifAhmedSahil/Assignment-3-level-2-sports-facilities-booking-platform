@@ -44,12 +44,12 @@ const deleteBookings = async(id:string) =>{
 }
 
 const checkSlots = async(date:string) =>{
-    // console.log("check kar",date)
+    console.log("check kar",date)
     const avaiableSlots = []
 
     // define start and end of the day in 24 hr formate: convert minute for match with bookings time 
     const startDay = 0
-    const endDay = (24 * 60)
+    const endDay = 24 * 60
     // const startDay = "00:00"
     // const endDay = (24 * 60).toString()
     
@@ -72,6 +72,7 @@ const checkSlots = async(date:string) =>{
 
 
     const bookingData = await Booking.find({date:date})
+    console.log("booking data",bookingData)
 
     const bookedTimeSlots = bookingData.filter((booking)=> {
         const startTime = hourToMinutes(booking.startTime)

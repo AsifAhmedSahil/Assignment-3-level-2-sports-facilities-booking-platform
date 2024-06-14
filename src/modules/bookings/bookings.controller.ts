@@ -143,34 +143,37 @@ const deleteBookingController = catchAsync(async (req, res) => {
 const checkAvaiability = catchAsync(async (req, res) => {
   // const date = req.query.date
   let date = req.query.date ? req.query.date : new Date();
+  console.log(date,"date 1st")
   const todaysDate = new Date();
-  console.log(todaysDate);
+  // console.log(todaysDate,"todays date");
 
-  if (date.toString() === todaysDate.toString()) {
-      const getTodayDate = (): string => {
-      const day = todaysDate.getDate().toString().padStart(2, "0");
-      const month = (todaysDate.getMonth() + 1).toString().padStart(2, "0");
-      const year = todaysDate.getFullYear().toString();
-      return `${year}-${month}-${day}`;
-    };
+  // if (date.toString() === todaysDate.toString()) {
+  //     const getTodayDate = (): string => {
+  //     const day = todaysDate.getDate().toString().padStart(2, "0");
+  //     const month = (todaysDate.getMonth() + 1).toString().padStart(2, "0");
+  //     const year = todaysDate.getFullYear().toString();
+  //     return `${year}-${month}-${day}`;
+  //   };
 
-    const modifiedDate = getTodayDate();
-    date = modifiedDate;
-  } 
-  else {
-      const fixDateFormat = (dateString: string): string => {
-      const [day, month, year] = dateString.split("-");
-      return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
-    };
-    const fixDate = fixDateFormat(date.toString());
-    date = fixDate;
-  }
+  //   const modifiedDate = getTodayDate();
+  //   console.log(modifiedDate,"modifieddate***********")
+  //   date = modifiedDate;
+  // } 
+  // else {
+  //     const fixDateFormat = (dateString: string): string => {
+  //     const [day, month, year] = dateString.split("-");
+  //     return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
+  //   };
+  //   const fixDate = fixDateFormat(date.toString());
+  //   console.log(fixDate,"fixdate")
+  //   date = fixDate;
+  //   console.log(date)
+  // }
 
   
-
   
-
   const result = await bookingServices.checkSlots(date);
+  console.log(result.length)
   res.status(200).json({
     success: true,
     statusCode: 200,

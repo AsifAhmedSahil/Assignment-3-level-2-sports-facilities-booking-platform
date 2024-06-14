@@ -28,7 +28,6 @@ const globalErrorHandler :ErrorRequestHandler = async(err,req,res,next) =>{
     }else if(err.code === 11000){
         console.log(err)
         const simplified = handleDuplicateError(err)
-        console.log(simplified,"message**********")
         errorSources = simplified.errorSources
         message = simplified.message
     }
@@ -39,6 +38,8 @@ const globalErrorHandler :ErrorRequestHandler = async(err,req,res,next) =>{
         errorSources = simplified.errorSources
         message= simplified.message
     }
+
+    console.log("find authentication error",err)
 
     res.status(500).json({
         success: false,
