@@ -4,6 +4,8 @@ import handleValidationError from "../errors/handleValidationError";
 import handleCastError from "../errors/handleCastError";
 import handleDuplicateError from "../errors/handleDuplicateError";
 import { ZodError } from "zod";
+import handleZodError from "../errors/handleZodError";
+import config from "../config";
 
 const globalErrorHandler :ErrorRequestHandler = async(err,req,res,next) =>{
 
@@ -29,13 +31,17 @@ const globalErrorHandler :ErrorRequestHandler = async(err,req,res,next) =>{
     }
 
     if(err instanceof ZodError){
-        console.log("zod error",err)
+        // console.log("zod error",err)
+        const simplified = handleZodError(err);
+        errorSources = simplified.errorSources
+        message= simplified.message
     }
 
     res.status(500).json({
         success: false,
         message,
-        errorSources
+        errorSources,
+        stack: config.node_env === 'development' ? err?.stack :null
     })
 
 }
