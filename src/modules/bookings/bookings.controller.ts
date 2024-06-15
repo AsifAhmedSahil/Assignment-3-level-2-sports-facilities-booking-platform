@@ -48,7 +48,7 @@ const createBookingController = catchAsync(async (req, res,next:NextFunction) =>
     // check user booked same time or not
     const bookingDataCheckTime = await Booking.find({user: userID})
     const checkSameTimeSlot = bookingDataCheckTime.map((time)=>{
-      if(time.date === bodyDate && time.startTime === startTimeFromBooking && time.endTime === endTimeFromBooking){
+      if(time.date === bodyDate && time.startTime === startTimeFromBooking && time.endTime === endTimeFromBooking ){
         throw new AppError(401,"This time slot already booked by you")
       }
       console.log(time.date , bodyDate)
