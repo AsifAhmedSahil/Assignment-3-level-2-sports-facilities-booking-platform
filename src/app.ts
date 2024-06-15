@@ -12,7 +12,7 @@ app.use("/api",router)
 
 
 app.get('/', (req:Request, res:Response) => {
-  res.send('Hello World!')
+  res.send('Welcome to the project - Sports Facility Booking Platform')
 })
 app.get("/api/check-availability",bookingControllers.checkAvaiability)
 

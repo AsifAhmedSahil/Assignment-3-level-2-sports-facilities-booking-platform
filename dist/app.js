@@ -12,7 +12,7 @@ const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use("/api", routes_1.default);
 app.get('/', (req, res) => {
-    res.send('Hello World!');
+    res.send('Welcome to the project - Sports Facility Booking Platform');
 });
 app.get("/api/check-availability", bookings_controller_1.bookingControllers.checkAvaiability);
 app.use(globalErrorHandler_1.default);

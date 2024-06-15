@@ -19,6 +19,7 @@ const catchAsync_1 = __importDefault(require("../../utils/catchAsync"));
 const user_model_1 = require("../user/user.model");
 const bookings_service_1 = require("./bookings.service");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const bookings_model_1 = require("./bookings.model");
 const createBookingController = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const tokenWithBearer = req.headers.authorization;
@@ -36,9 +37,19 @@ const createBookingController = (0, catchAsync_1.default)((req, res, next) => __
             const { email } = verifiedToken;
             // console.log("email",email)
             const userinfo = yield user_model_1.User.findOne({ email: email });
+            const userID = userinfo === null || userinfo === void 0 ? void 0 : userinfo._id;
             // console.log(userinfo?._id ,"user id decoded")
             const newData = Object.assign(Object.assign({}, req.body), { user: userinfo === null || userinfo === void 0 ? void 0 : userinfo._id });
-            // console.log("new data",newData)
+            const { startTime: startTimeFromBooking, endTime: endTimeFromBooking, date } = req.body;
+            const bodyDate = date;
+            // check user booked same time or not
+            const bookingDataCheckTime = yield bookings_model_1.Booking.find({ user: userID });
+            const checkSameTimeSlot = bookingDataCheckTime.map((time) => {
+                if (time.date === bodyDate && time.startTime === startTimeFromBooking && time.endTime === endTimeFromBooking) {
+                    throw new AppError_1.default(401, "This time slot already booked by you");
+                }
+                console.log(time.date, bodyDate);
+            });
             const result = yield bookings_service_1.bookingServices.createBooking(newData);
             res.status(200).json({
                 success: true,

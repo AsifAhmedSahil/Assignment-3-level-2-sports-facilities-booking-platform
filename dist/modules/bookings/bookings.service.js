@@ -22,7 +22,7 @@ const createBooking = (payload) => __awaiter(void 0, void 0, void 0, function* (
     const payPerHour = facilityData ? facilityData.pricePerHour : 0;
     const bookingHours = (endTimeHours - startTimeHours);
     const payableAmount = bookingHours * payPerHour;
-    console.log("payableAmount", payableAmount);
+    // console.log("payableAmount",payableAmount)
     const isBooked = "confirmed";
     const updatePayloadWithPayableAmount = Object.assign(Object.assign({}, payload), { payableAmount, isBooked });
     const result = (yield bookings_model_1.Booking.create(updatePayloadWithPayableAmount)).populate("user");

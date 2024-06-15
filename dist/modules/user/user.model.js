@@ -31,7 +31,8 @@ const userModel = new mongoose_1.Schema({
         required: [true, "password must be 8 characters"]
     },
     phone: {
-        type: String
+        type: String,
+        required: true
     },
     role: {
         type: String,

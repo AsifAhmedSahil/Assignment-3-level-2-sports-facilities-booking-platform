@@ -16,7 +16,7 @@ const createBooking = async(payload:TBooking) =>{
 
     const bookingHours = (endTimeHours-startTimeHours) 
     const payableAmount = bookingHours * payPerHour
-    console.log("payableAmount",payableAmount)
+    // console.log("payableAmount",payableAmount)
 
     const isBooked = "confirmed"
 
