@@ -7,6 +7,7 @@ import { bookingServices } from "./bookings.service";
 import jwt, { JwtPayload } from "jsonwebtoken";
 
 import { NextFunction } from "express";
+import { Booking } from "./bookings.model";
 
 const createBookingController = catchAsync(async (req, res,next:NextFunction) => {
   try {
@@ -29,16 +30,29 @@ const createBookingController = catchAsync(async (req, res,next:NextFunction) =>
     console.log(verifiedToken, "from boking contro");
 
     const { email } = verifiedToken as JwtPayload;
+    
     // console.log("email",email)
     const userinfo = await User.findOne({ email: email });
+    const userID = userinfo?._id
     // console.log(userinfo?._id ,"user id decoded")
 
     const newData = {
       ...req.body,
       user: userinfo?._id,
     };
-    // console.log("new data",newData)
 
+    
+    const {startTime:startTimeFromBooking,endTime:endTimeFromBooking,date} = req.body
+    const bodyDate = date
+    
+    // check user booked same time or not
+    const bookingDataCheckTime = await Booking.find({user: userID})
+    const checkSameTimeSlot = bookingDataCheckTime.map((time)=>{
+      if(time.date === bodyDate && time.startTime === startTimeFromBooking && time.endTime === endTimeFromBooking){
+        throw new AppError(401,"This time slot already booked by you")
+      }
+      console.log(time.date , bodyDate)
+    })
     const result = await bookingServices.createBooking(newData);
 
     res.status(200).json({
