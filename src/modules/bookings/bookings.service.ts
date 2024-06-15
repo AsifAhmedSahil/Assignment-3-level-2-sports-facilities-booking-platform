@@ -50,8 +50,7 @@ const checkSlots = async(date:string) =>{
     // define start and end of the day in 24 hr formate: convert minute for match with bookings time 
     const startDay = 0
     const endDay = 24 * 60
-    // const startDay = "00:00"
-    // const endDay = (24 * 60).toString()
+    
     
 
     // convert hr and minute format time to min format

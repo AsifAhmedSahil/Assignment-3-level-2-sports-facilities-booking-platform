@@ -173,16 +173,7 @@ const checkAvaiability = catchAsync(async (req, res) => {
     console.log(modifiedDate,"modifieddate***********")
     date = modifiedDate;
   } 
-  // else {
-  //     const fixDateFormat = (dateString: string): string => {
-  //     const [day, month, year] = dateString.split("-");
-  //     return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
-  //   };
-  //   const fixDate = fixDateFormat(date.toString());
-  //   console.log(fixDate,"fixdate")
-  //   date = fixDate;
-  //   console.log(date)
-  // }
+ 
 
   if(!date){
     throw new Error("date is not define")
