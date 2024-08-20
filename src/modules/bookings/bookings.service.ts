@@ -43,74 +43,62 @@ const deleteBookings = async(id:string) =>{
     return result
 }
 
-const checkSlots = async(date:string) =>{
-    console.log("check kar",date)
-    const avaiableSlots = []
-
-    // define start and end of the day in 24 hr formate: convert minute for match with bookings time 
-    const startDay = 0
-    const endDay = 24 * 60
-    
-    
-
-    // convert hr and minute format time to min format
-    const hourToMinutes = (time:string) =>{
-        const [hour,minute] = time.split(":").map(Number)
-        return hour * 60 + minute
-    }
-
-    // convert min to hr format 
-    const minutesToHours = (minutes :number) => {
-        const hours = Math.floor(minutes % 60);
-        console.log(hours,"hours")
-        // const mins = minutes % 60;
-        // console.log(mins,"mins")
-        // return `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}`;
-        return `${hours.toString().padStart(2, '0')}:00`;
+const checkSlots = async (date: string) => {
+    console.log("Checking availability for date:", date);
+    const availableSlots = [];
+  
+    // Define start and end of the day in minutes
+    const startDay = 0;
+    const endDay = 24 * 60;
+  
+    // Convert time to minutes
+    const hourToMinutes = (time: string): number => {
+      const [hour, minute] = time.split(":").map(Number);
+      return hour * 60 + minute;
     };
-
-
-    const bookingData = await Booking.find({date:date})
-    console.log("booking data",bookingData)
-
-    const bookedTimeSlots = bookingData.filter((booking)=> {
-        const startTime = hourToMinutes(booking.startTime)
-        const endTime =  hourToMinutes(booking.endTime)
-        console.log(startTime,endTime)
-        return {
-            startTime,endTime
-        }
-    })
-    
-
-    // calculate avaiable slots for this day
-    let previousEndTime =startDay;
-    for(const slot of bookedTimeSlots){
-        console.log("check loop",slot.startTime)
-        if(parseInt(slot.startTime) > previousEndTime){
-            avaiableSlots.push({
-                startTime: minutesToHours(previousEndTime),
-                endTime: minutesToHours(parseInt(slot.startTime)) 
-            })
-        }
-        
-        previousEndTime = parseInt(slot.endTime)
+  
+    // Convert minutes to HH:MM format
+    const minutesToHours = (minutes: number): string => {
+      const hours = Math.floor(minutes / 60);
+      const mins = minutes % 60;
+      return `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}`;
+    };
+  
+    // Retrieve bookings for the specified date
+    const bookingData = await Booking.find({ date: date });
+    console.log("Booking data:", bookingData);
+  
+    // Extract booked time slots
+    const bookedTimeSlots = bookingData.map((booking) => ({
+      startTime: hourToMinutes(booking.startTime),
+      endTime: hourToMinutes(booking.endTime),
+    }));
+  
+    // Calculate available slots
+    let previousEndTime = startDay;
+  
+    // Iterate over booked slots to find gaps
+    for (const slot of bookedTimeSlots) {
+      if (slot.startTime > previousEndTime) {
+        availableSlots.push({
+          startTime: minutesToHours(previousEndTime),
+          endTime: minutesToHours(slot.startTime),
+        });
+      }
+      previousEndTime = Math.max(previousEndTime, slot.endTime);
     }
-   
-
-    
-    
-
-    // check if there are any slots avaiable there after last booking
-    if(previousEndTime < endDay){
-        avaiableSlots.push({
-            startTime: minutesToHours(previousEndTime),
-            endTime: minutesToHours(endDay)
-        })
+  
+    // Check if there are any slots available after the last booking
+    if (previousEndTime < endDay) {
+      availableSlots.push({
+        startTime: minutesToHours(previousEndTime),
+        endTime: minutesToHours(endDay),
+      });
     }
-    
-    return avaiableSlots
-}
+  
+    return availableSlots;
+  };
+  
 
 
 export const bookingServices = {

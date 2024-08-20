@@ -155,41 +155,25 @@ const deleteBookingController = catchAsync(async (req, res) => {
 });
 
 const checkAvaiability = catchAsync(async (req, res) => {
-  // const date = req.query.date
-  let date = req.query.date ? req.query.date : new Date();
-  console.log(date,"date 1st")
-  const todaysDate = new Date();
-  // console.log(todaysDate,"todays date");
+  let date = req.query.date || new Date().toISOString().split('T')[0];
+  const todaysDate = new Date().toISOString().split('T')[0];
 
-  if (date.toString() === todaysDate.toString()) {
-      const getTodayDate = (): string => {
-      const day = todaysDate.getDate().toString().padStart(2, "0");
-      const month = (todaysDate.getMonth() + 1).toString().padStart(2, "0");
-      const year = todaysDate.getFullYear().toString();
-      return `${year}-${month}-${day}`;
-    };
-
-    const modifiedDate = getTodayDate();
-    console.log(modifiedDate,"modifieddate***********")
-    date = modifiedDate;
-  } 
- 
-
-  if(!date){
-    throw new Error("date is not define")
+  if (date === todaysDate) {
+    date = todaysDate;
+  } else {
+    // Ensure date is formatted correctly
+    date = new Date(date).toISOString().split('T')[0];
   }
-  
-  
-  const result = await bookingServices.checkSlots(date as string);
-  console.log(result.length)
+
+  const result = await bookingServices.checkSlots(date);
   res.status(200).json({
     success: true,
     statusCode: 200,
-    message: " avaiable slots here",
+    message: "Available slots here",
     data: result,
   });
-  
 });
+
 
 export const bookingControllers = {
   createBookingController,
