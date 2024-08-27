@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import mongoose from "mongoose";
+
 import config from "../../config";
 import { TUser } from "../user/user.interface";
 import { User } from "../user/user.model";
@@ -82,15 +82,10 @@ const login = async (payload: TLoginUser) => {
   };
 };
 
-const getUserByEmailFromDB = async (id:any) => {
-  const objectId = mongoose.Types.ObjectId.isValid(id) ? mongoose.Types.ObjectId(id) : id;
-  const user = await User.findOne({ _id: objectId });
-  return user
-};
+
 
 export const authServices = {
   signup,
   adminSignup,
   login,
-  getUserByEmailFromDB
 };
