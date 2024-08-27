@@ -21,6 +21,10 @@ const facilitiesModel = new Schema<TFacility>({
     type: String,
     required: [true, "Location is required"],
   },
+  image: {
+    type: String,
+    required: [true, "Image is required"],
+  },
   isDeleted: {
     type: Boolean,
     default: false,

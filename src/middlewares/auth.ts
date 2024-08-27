@@ -9,6 +9,7 @@ import { TUser_Role } from "../modules/user/user.interface";
 export const auth = (...requiredRoles :TUser_Role[]) =>{
     return catchAsync(async(req:Request,res:Response,next:NextFunction) =>{
         const tokenWithBearer = req.headers.authorization;
+        console.log(tokenWithBearer)
 
         if(!tokenWithBearer){
             throw new AppError(401,"You are not authorized!")

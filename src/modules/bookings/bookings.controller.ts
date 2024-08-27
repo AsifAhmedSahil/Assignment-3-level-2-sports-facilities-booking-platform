@@ -85,6 +85,8 @@ const getAllBookingController = catchAsync(async (req, res) => {
     });
   }
 });
+
+
 const getSingleBookingController = catchAsync(async (req, res) => {
   try {
     const tokenWithBearer = req.headers.authorization;
@@ -181,4 +183,5 @@ export const bookingControllers = {
   getSingleBookingController,
   deleteBookingController,
   checkAvaiability,
+  
 };

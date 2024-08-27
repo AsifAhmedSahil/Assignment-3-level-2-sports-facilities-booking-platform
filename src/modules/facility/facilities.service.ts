@@ -12,6 +12,11 @@ const getAllFacilityFromDB = async() =>{
     const result = await Facilities.find()
     return result
 }
+const getSingleFacilityFromDB = async(id:string) =>{
+
+    const result = await Facilities.findById(id)
+    return result
+}
 const updateFacilityIntoDB = async(id:string , payload:Partial<TFacility>) =>{
 
     const {...updatedFields} = payload
@@ -34,6 +39,7 @@ export const facilitiesServices = {
      createFacilityIntoDB,
      getAllFacilityFromDB,
      updateFacilityIntoDB,
-     delteFacilityFromDB
+     delteFacilityFromDB,
+     getSingleFacilityFromDB
 
 }

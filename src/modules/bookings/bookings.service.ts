@@ -3,29 +3,65 @@ import { Facilities } from "../facility/facilities.model";
 import { TBooking } from "./bookings.interface"
 import { Booking } from "./bookings.model"
 
-const createBooking = async(payload:TBooking) =>{
-    const {startTime,endTime,facility} = payload
+const createBooking = async (payload: TBooking) => {
+  const { startTime, endTime, facility } = payload;
 
-    // convert time string to number
-    const startTimeHours = parseInt(startTime.split(":")[0]);
-    const endTimeHours  =parseInt(endTime.split(":")[0])
+  // Convert time string to numbers
+  const [startHour, startMinute] = startTime.split(":").map(Number);
+  const [endHour, endMinute] = endTime.split(":").map(Number);
 
-    // find facility data and get per hour cost
-    const facilityData = await Facilities.findById(facility)
-    const payPerHour = facilityData? facilityData.pricePerHour : 0
+  // Convert start and end times to minutes since midnight
+  const startTimeInMinutes = startHour * 60 + startMinute;
+  const endTimeInMinutes = endHour * 60 + endMinute;
 
-    const bookingHours = (endTimeHours-startTimeHours) 
-    const payableAmount = bookingHours * payPerHour
-    // console.log("payableAmount",payableAmount)
+  // Calculate the total duration in minutes
+  const durationInMinutes = endTimeInMinutes - startTimeInMinutes;
 
-    const isBooked = "confirmed"
+  // Check if duration is valid
+  if (durationInMinutes <= 0) {
+      console.error("Invalid booking duration");
+      throw new Error("Invalid booking duration");
+  }
 
-    const updatePayloadWithPayableAmount = {...payload,payableAmount,isBooked}
+  // Find facility data and get per hour cost
+  const facilityData = await Facilities.findById(facility);
+  if (!facilityData) {
+      console.error("Facility not found");
+      throw new Error("Facility not found");
+  }
 
-    const result = (await Booking.create(updatePayloadWithPayableAmount)).populate("user")
-    return result
+  const payPerHour = facilityData.pricePerHour;
+  
+  // Ensure payPerHour is valid
+  if (payPerHour <= 0) {
+      console.error("Invalid facility price");
+      throw new Error("Invalid facility price");
+  }
 
-}
+  // Calculate per minute cost
+  const payPerMinute = payPerHour / 60;
+
+  // Calculate the payable amount
+  const payableAmount = durationInMinutes * payPerMinute;
+
+  // Log for debugging
+  console.log({
+      startHour, startMinute, endHour, endMinute,
+      startTimeInMinutes, endTimeInMinutes, durationInMinutes,
+      payPerHour, payPerMinute, payableAmount
+  });
+
+  const isBooked = "confirmed";
+
+  // Update payload with payable amount and booking status
+  const updatePayloadWithPayableAmount = { ...payload, payableAmount, isBooked };
+
+  // Create the booking and populate user details
+  const result = (await Booking.create(updatePayloadWithPayableAmount)).populate("user");
+
+  return result;
+};
+
 const getAllBooking = async() =>{
     const result = await Booking.find().populate("facility").populate("user")
     return result

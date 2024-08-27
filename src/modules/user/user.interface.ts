@@ -6,6 +6,7 @@ export interface TUser  {
     password:string;
     phone:string;
     role: 'user'|'admin' ;
+    image:string;
     address:string
 
 }

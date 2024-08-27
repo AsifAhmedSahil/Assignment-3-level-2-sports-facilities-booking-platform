@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import mongoose from "mongoose";
 import config from "../../config";
 import { TUser } from "../user/user.interface";
 import { User } from "../user/user.model";
@@ -12,7 +14,20 @@ const signup = async (payload: TUser) => {
     throw new Error("User Already Exists!");
   }
 
-//   payload.role = "user";
+  payload.role = "user";
+
+  // console.log(payload)
+  const result = await User.create(payload);
+  return result;
+};
+const adminSignup = async (payload: TUser) => {
+  // check user existance
+  const user = await User.findOne({ email: payload.email });
+  if (user) {
+    throw new Error("User Already Exists!");
+  }
+
+  payload.role = "admin";
 
   // console.log(payload)
   const result = await User.create(payload);
@@ -43,6 +58,7 @@ const login = async (payload: TLoginUser) => {
   const jwtPayload = {
     email: user.email,
     role: user.role,
+    name:user.name
   };
   console.log(jwtPayload);
   console.log(config.jwt_refresh_secret);
@@ -66,7 +82,15 @@ const login = async (payload: TLoginUser) => {
   };
 };
 
+const getUserByEmailFromDB = async (id:any) => {
+  const objectId = mongoose.Types.ObjectId.isValid(id) ? mongoose.Types.ObjectId(id) : id;
+  const user = await User.findOne({ _id: objectId });
+  return user
+};
+
 export const authServices = {
   signup,
+  adminSignup,
   login,
+  getUserByEmailFromDB
 };

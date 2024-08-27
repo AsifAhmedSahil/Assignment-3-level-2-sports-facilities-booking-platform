@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { TUser } from "./user.interface"
 import { User } from "./user.model"
 
@@ -17,8 +18,13 @@ const getAllUserFromDB = async() =>{
 
 }
 
+const getUserByEmailFromDB = async (email:any) => {
+    return await User.findOne({ email: email });
+  };
+
 
 export const userServices = {
     createUserIntoDB,
-    getAllUserFromDB
+    getAllUserFromDB,
+    getUserByEmailFromDB
 }

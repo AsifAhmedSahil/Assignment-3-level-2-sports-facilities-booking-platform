@@ -6,6 +6,7 @@ const createUserValidation = z.object({
         email:z.string(),
         password: z.string(),
         phone:z.string(),
+        image:z.string(),
         role:z.enum(['user','admin']),
         address:z.string()
 

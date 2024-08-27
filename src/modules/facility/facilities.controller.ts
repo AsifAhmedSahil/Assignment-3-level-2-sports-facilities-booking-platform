@@ -35,6 +35,28 @@ const getAllFacility = catchAsync(async (req, res) => {
     });
   }
 });
+const getSingleFacility = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  console.log(id)
+  try {
+    const result = await facilitiesServices.getSingleFacilityFromDB(id);
+
+  res.status(200).json({
+    success: true,
+    statusCode: 200,
+    message: "All Facilities retrieved Successfully",
+    data: result,
+  });
+    
+  } catch (error) {
+    res.status(200).json({
+      success: false,
+      statusCode: 404,
+      message: "No Data Found",
+      data: [],
+    });
+  }
+});
 
 const updateFacility = catchAsync(async (req, res) => {
   try {
@@ -82,5 +104,6 @@ export const facilitiesController = {
   createFacility,
   getAllFacility,
   updateFacility,
-  deleteFacility
+  deleteFacility,
+  getSingleFacility
 };

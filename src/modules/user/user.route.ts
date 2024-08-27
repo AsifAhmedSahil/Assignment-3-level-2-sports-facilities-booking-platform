@@ -6,5 +6,6 @@ const router = express.Router();
 
 router.post("/signup",validationSchema(userValidations.createUserValidation), userControllers.createUser);
 router.get("/", userControllers.getAllUser);
+router.get("/:email", userControllers.getAllUser);
 
 export const userRouter = router;
