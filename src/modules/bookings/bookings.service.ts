@@ -7,7 +7,7 @@ import { Booking } from "./bookings.model"
 import { initiatePayment } from "../Payments/Payments.util";
 
 const createBooking = async (payload: TBooking) => {
-  const { startTime, endTime, facility,user } = payload;
+  const { startTime, endTime, facility } = payload;
 
   // Define working hours in minutes (10:00 AM to 10:00 PM)
   const workingStart = 10 * 60; // 10:00 AM in minutes

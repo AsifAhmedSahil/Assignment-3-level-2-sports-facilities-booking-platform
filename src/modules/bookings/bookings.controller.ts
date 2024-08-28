@@ -42,17 +42,21 @@ const createBookingController = catchAsync(async (req, res, next: NextFunction) 
 
     const { startTime: startTimeFromBooking, endTime: endTimeFromBooking, date: bodyDate, facility } = req.body;
 
-    // Check if the user has already booked the same time slot on the same date and same facility
-    const bookingDataCheckTime = await Booking.find({
+    // Check for overlapping bookings
+    const overlappingBookings = await Booking.find({
       user: userID,
       date: bodyDate,
-      startTime: startTimeFromBooking,
-      endTime: endTimeFromBooking,
-      facility: facility, // Ensure facility is included in the check
+      facility: facility,
+      $or: [
+        {
+          startTime: { $lt: endTimeFromBooking }, // Check if the new start time is before the existing end time
+          endTime: { $gt: startTimeFromBooking }  // Check if the new end time is after the existing start time
+        }
+      ]
     });
 
-    if (bookingDataCheckTime.length > 0) {
-      throw new AppError(400, "This time slot is already booked by you.");
+    if (overlappingBookings.length > 0) {
+      throw new AppError(400, "This time slot overlaps with an existing booking.");
     }
 
     // Call the service to create the booking
@@ -183,8 +187,9 @@ const deleteBookingController = catchAsync(async (req, res) => {
 // -------------------with update slots----------------
 
 const checkAvailability = catchAsync(async (req, res) => {
-  let date = req.query.date || new Date().toISOString().split('T')[0];
-  const facility = req.query.facility;
+  // Ensure date is a string or set to today’s date
+  let date: string = typeof req.query.date === 'string' ? req.query.date : new Date().toISOString().split('T')[0];
+  const facility: string = typeof req.query.facility === 'string' ? req.query.facility : '';
 
   // Validate facility ID
   if (!facility) {
@@ -217,6 +222,7 @@ const checkAvailability = catchAsync(async (req, res) => {
     data: result,
   });
 });
+
 
 
 export const bookingControllers = {
