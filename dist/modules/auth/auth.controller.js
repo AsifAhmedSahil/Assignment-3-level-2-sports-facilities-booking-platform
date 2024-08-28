@@ -25,6 +25,15 @@ const signupController = (0, catchAsync_1.default)((req, res) => __awaiter(void 
         data: result,
     });
 }));
+const adminSignUpController = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield auth_service_1.authServices.adminSignup(req.body);
+    res.status(200).json({
+        success: true,
+        statusCode: 200,
+        message: "User Registered Successfully",
+        data: result,
+    });
+}));
 const loginController = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield auth_service_1.authServices.login(req.body);
     console.log("result from login", result);
@@ -43,5 +52,6 @@ const loginController = (0, catchAsync_1.default)((req, res) => __awaiter(void 0
 }));
 exports.authControllers = {
     signupController,
-    loginController
+    loginController,
+    adminSignUpController
 };

@@ -8,6 +8,7 @@ const createFacilitiesValidation = zod_1.z.object({
         description: zod_1.z.string(),
         pricePerHour: zod_1.z.number(),
         location: zod_1.z.string(),
+        image: zod_1.z.string().optional(),
         isDeleted: zod_1.z.boolean().optional(),
     })
 });

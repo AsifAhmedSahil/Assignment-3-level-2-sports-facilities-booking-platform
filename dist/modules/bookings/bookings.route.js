@@ -13,6 +13,9 @@ const user_contant_1 = require("../user/user.contant");
 const router = express_1.default.Router();
 router.post("/", (0, auth_1.auth)(user_contant_1.USER_Role.user), (0, ValidationSchema_1.default)(bookings_validation_1.bookingValidations.createBookingValidation), bookings_controller_1.bookingControllers.createBookingController);
 router.get("/", (0, auth_1.auth)(user_contant_1.USER_Role.admin), bookings_controller_1.bookingControllers.getAllBookingController);
-router.get("/user", (0, auth_1.auth)(user_contant_1.USER_Role.user), bookings_controller_1.bookingControllers.getSingleBookingController);
-router.delete("/:id", (0, auth_1.auth)(user_contant_1.USER_Role.user), bookings_controller_1.bookingControllers.deleteBookingController);
+// router.get("/",bookingControllers.getAllBookingController)
+router.get("/:user", (0, auth_1.auth)(user_contant_1.USER_Role.user), bookings_controller_1.bookingControllers.getSingleBookingController);
+// router.get("/user",bookingControllers.getSingleBookingController)
+router.delete("/:id", (0, auth_1.auth)(user_contant_1.USER_Role.user, user_contant_1.USER_Role.admin), bookings_controller_1.bookingControllers.deleteBookingController);
+// router.delete("/:id",bookingControllers.deleteBookingController) 
 exports.bookingRoute = router;

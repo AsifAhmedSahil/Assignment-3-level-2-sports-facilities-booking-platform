@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.User = void 0;
+/* eslint-disable @typescript-eslint/no-this-alias */
 const mongoose_1 = require("mongoose");
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const config_1 = __importDefault(require("../../config"));
@@ -31,6 +32,10 @@ const userModel = new mongoose_1.Schema({
         required: [true, "password must be 8 characters"]
     },
     phone: {
+        type: String,
+        required: true
+    },
+    image: {
         type: String,
         required: true
     },

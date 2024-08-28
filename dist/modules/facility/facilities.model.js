@@ -21,6 +21,10 @@ const facilitiesModel = new mongoose_1.Schema({
         type: String,
         required: [true, "Location is required"],
     },
+    image: {
+        type: String,
+        required: [true, "Image is required"],
+    },
     isDeleted: {
         type: Boolean,
         default: false,

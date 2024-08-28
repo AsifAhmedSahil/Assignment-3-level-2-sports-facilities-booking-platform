@@ -43,6 +43,27 @@ const getAllFacility = (0, catchAsync_1.default)((req, res) => __awaiter(void 0,
         });
     }
 }));
+const getSingleFacility = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    console.log(id);
+    try {
+        const result = yield facilities_service_1.facilitiesServices.getSingleFacilityFromDB(id);
+        res.status(200).json({
+            success: true,
+            statusCode: 200,
+            message: "All Facilities retrieved Successfully",
+            data: result,
+        });
+    }
+    catch (error) {
+        res.status(200).json({
+            success: false,
+            statusCode: 404,
+            message: "No Data Found",
+            data: [],
+        });
+    }
+}));
 const updateFacility = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
@@ -86,5 +107,6 @@ exports.facilitiesController = {
     createFacility,
     getAllFacility,
     updateFacility,
-    deleteFacility
+    deleteFacility,
+    getSingleFacility
 };

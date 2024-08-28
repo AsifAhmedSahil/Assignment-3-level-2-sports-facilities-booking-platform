@@ -30,6 +30,10 @@ const getAllFacilityFromDB = () => __awaiter(void 0, void 0, void 0, function* (
     const result = yield facilities_model_1.Facilities.find();
     return result;
 });
+const getSingleFacilityFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield facilities_model_1.Facilities.findById(id);
+    return result;
+});
 const updateFacilityIntoDB = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
     const updatedFields = __rest(payload, []);
     const result = yield facilities_model_1.Facilities.findByIdAndUpdate(id, updatedFields, { new: true });
@@ -46,5 +50,6 @@ exports.facilitiesServices = {
     createFacilityIntoDB,
     getAllFacilityFromDB,
     updateFacilityIntoDB,
-    delteFacilityFromDB
+    delteFacilityFromDB,
+    getSingleFacilityFromDB
 };

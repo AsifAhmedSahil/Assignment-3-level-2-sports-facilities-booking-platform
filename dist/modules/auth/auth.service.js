@@ -1,4 +1,5 @@
 "use strict";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -23,7 +24,18 @@ const signup = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     if (user) {
         throw new Error("User Already Exists!");
     }
-    //   payload.role = "user";
+    payload.role = "user";
+    // console.log(payload)
+    const result = yield user_model_1.User.create(payload);
+    return result;
+});
+const adminSignup = (payload) => __awaiter(void 0, void 0, void 0, function* () {
+    // check user existance
+    const user = yield user_model_1.User.findOne({ email: payload.email });
+    if (user) {
+        throw new Error("User Already Exists!");
+    }
+    payload.role = "admin";
     // console.log(payload)
     const result = yield user_model_1.User.create(payload);
     return result;
@@ -45,6 +57,7 @@ const login = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     const jwtPayload = {
         email: user.email,
         role: user.role,
+        name: user.name
     };
     console.log(jwtPayload);
     console.log(config_1.default.jwt_refresh_secret);
@@ -62,5 +75,6 @@ const login = (payload) => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.authServices = {
     signup,
+    adminSignup,
     login,
 };

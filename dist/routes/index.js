@@ -4,6 +4,7 @@ const express_1 = require("express");
 const facilities_route_1 = require("../modules/facility/facilities.route");
 const bookings_route_1 = require("../modules/bookings/bookings.route");
 const auth_route_1 = require("../modules/auth/auth.route");
+const payment_route_1 = require("../modules/Payments/payment.route");
 const router = (0, express_1.Router)();
 const middleRoute = [
     {
@@ -17,6 +18,10 @@ const middleRoute = [
     {
         path: "/bookings",
         route: bookings_route_1.bookingRoute
+    },
+    {
+        path: "/payment",
+        route: payment_route_1.paymentRoutes
     },
     // {
     //     path:"/",
