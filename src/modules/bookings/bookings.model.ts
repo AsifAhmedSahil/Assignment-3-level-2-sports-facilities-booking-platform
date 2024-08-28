@@ -27,6 +27,11 @@ const bookingModel = new Schema<TBooking>({
         type:String,
         required: [true,"Guest Count is required"]
     },
+    transactionId:{
+        type:String
+        
+    },
+    
     user:{
         type: Schema.Types.ObjectId,
         ref:"User",
@@ -44,6 +49,10 @@ const bookingModel = new Schema<TBooking>({
     isBooked:{
         type:String,
         enum:['confirmed', "unconfirmed", "canceled"]
+    },
+    paymentStatus:{
+        type:String,
+        enum:['Paid',  "unpaid"]
     }
 
 })

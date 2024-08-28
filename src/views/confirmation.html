@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Confirmation</title>
+</head>
+<body style="font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f4f4;">
+    <div style="max-width: 800px; margin: 20px auto; padding: 20px; background-color: #fff; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+        <h1 style="color: #201dcc; font-size: 2em; margin-bottom: 20px;">Booking Confirmation Slip</h1>
+        <p style="color: #555; line-height: 1.6; margin-bottom: 20px;">Thank you for your booking! Your reservation has been confirmed. Here are the details of your booking:</p>
+        
+        <!-- Booking Details -->
+        <div style="border-top: 1px solid #eee; padding-top: 20px; margin-top: 20px;">
+            <h2 style="color: #333; font-size: 1.5em; margin-bottom: 10px;">Booking Summary</h2>
+            <p style="color: #555; line-height: 1.6; margin: 5px 0;"><strong>First Name:</strong> {{firstName}}</p>
+            <p style="color: #555; line-height: 1.6; margin: 5px 0;"><strong>Last Name:</strong> {{lastName}}</p>
+            <p style="color: #555; line-height: 1.6; margin: 5px 0;"><strong>Date:</strong> {{bookingDate}}</p>
+            <p style="color: #555; line-height: 1.6; margin: 5px 0;"><strong>Start Time:</strong> {{startTime}}</p>
+            <p style="color: #555; line-height: 1.6; margin: 5px 0;"><strong>End Time:</strong> {{endTime}}</p>
+            <p style="color: #555; line-height: 1.6; margin: 5px 0;"><strong>Number of Guests:</strong> {{guestCount}}</p>
+            <p style="color: #555; line-height: 1.6; margin: 5px 0;"><strong>Payment Status:</strong> <span style="color: #077732;">{{paymentStatus}}</span></p>
+        </div>
+
+        <!-- Footer -->
+        <div style="border-top: 1px solid #eee; padding-top: 20px; margin-top: 20px;">
+            <p style="color: #555; line-height: 1.6; margin: 5px 0;">If you have any questions or need further assistance, please contact us at <a href="mailto:support@example.com" style="color: #0066cc; text-decoration: none;">fortunesports@gmail.com</a>.</p>
+            <p style="color: #555; line-height: 1.6; margin: 5px 0;">We look forward to welcoming you!</p>
+            <!-- Back to Home Button -->
+           
+                <div style="text-align: center; margin-top: 20px;">
+                    <a href="http://localhost:5173" style="display: inline-block; padding: 10px 20px; font-size: 1em; color: #fff; background-color: #007bff; border-radius: 5px; text-decoration: none; transition: background-color 0.3s;">
+                        Back to Home
+                    </a>
+                </div>
+            
+        </div>
+    </div>
+</body>
+</html>

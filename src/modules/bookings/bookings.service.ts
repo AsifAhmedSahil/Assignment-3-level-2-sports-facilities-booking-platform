@@ -4,9 +4,10 @@ import { Facilities } from "../facility/facilities.model";
 
 import { TBooking } from "./bookings.interface"
 import { Booking } from "./bookings.model"
+import { initiatePayment } from "../Payments/Payments.util";
 
 const createBooking = async (payload: TBooking) => {
-  const { startTime, endTime, facility } = payload;
+  const { startTime, endTime, facility,user } = payload;
 
   // Define working hours in minutes (10:00 AM to 10:00 PM)
   const workingStart = 10 * 60; // 10:00 AM in minutes
@@ -88,14 +89,32 @@ const createBooking = async (payload: TBooking) => {
   });
 
   const isBooked = "confirmed";
+  const paymentStatus = "unpaid"
+  const transactionId = `TXN-${Date.now()}`;
+
 
   // Update payload with payable amount and booking status
-  const updatePayloadWithPayableAmount = { ...payload, payableAmount, isBooked };
+  const updatePayloadWithPayableAmount = { ...payload, payableAmount, isBooked ,transactionId,paymentStatus};
 
   // Create the booking and populate user details
   const result = (await Booking.create(updatePayloadWithPayableAmount)).populate("user");
+  console.log(result)
 
-  return result;
+
+  // payment
+
+  const paymentData = {
+    transactionId,
+    payableAmount,
+    customerName:payload.firstName,
+    customerEmail:payload.email
+  }
+
+  const paymentInfo = await initiatePayment(paymentData)
+  console.log(paymentInfo)
+
+
+  return paymentInfo;
 };
 
 

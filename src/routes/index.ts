@@ -3,6 +3,7 @@ import { Router } from "express";
 import { facilitiesRouter } from "../modules/facility/facilities.route";
 import { bookingRoute } from "../modules/bookings/bookings.route";
 import { authRouter } from "../modules/auth/auth.route";
+import { paymentRoutes } from "../modules/Payments/payment.route";
 
 
 
@@ -20,6 +21,10 @@ const middleRoute = [
     {
         path:"/bookings",
         route: bookingRoute
+    },
+    {
+        path:"/payment",
+        route: paymentRoutes
     },
     // {
     //     path:"/",
