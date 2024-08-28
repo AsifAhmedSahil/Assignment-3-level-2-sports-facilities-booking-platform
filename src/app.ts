@@ -18,7 +18,7 @@ app.use("/api",router)
 app.get('/', (req:Request, res:Response) => {
   res.send('Welcome to the project - Sports Facility Booking Platform')
 })
-app.get("/api/check-availability",bookingControllers.checkAvaiability)
+app.get("/api/check-availability",bookingControllers.checkAvailability)
 
 app.use(globalErrorHandler)
 // not found route

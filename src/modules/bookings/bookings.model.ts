@@ -15,6 +15,18 @@ const bookingModel = new Schema<TBooking>({
         type:String,
         required: [true,"End Time is required"]
     },
+    firstName:{
+        type:String,
+        required: [true,"First Name is required"]
+    },
+    lastName:{
+        type:String,
+        required: [true,"Last Name is required"]
+    },
+    guestCount:{
+        type:String,
+        required: [true,"Guest Count is required"]
+    },
     user:{
         type: Schema.Types.ObjectId,
         ref:"User",

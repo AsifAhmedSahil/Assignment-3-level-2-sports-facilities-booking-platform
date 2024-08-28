@@ -9,16 +9,15 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 import { NextFunction } from "express";
 import { Booking } from "./bookings.model";
 
-const createBookingController = catchAsync(async (req, res,next:NextFunction) => {
+const createBookingController = catchAsync(async (req, res, next: NextFunction) => {
   try {
     const tokenWithBearer = req.headers.authorization;
-  if (!tokenWithBearer) {
-    throw new AppError(401, "Unauthorized users!");
-  }
-  if (tokenWithBearer) {
-    const token = tokenWithBearer.split(" ")[1];
-    console.log("after cut bearer", token);
 
+    if (!tokenWithBearer) {
+      throw new AppError(401, "Unauthorized users!");
+    }
+
+    const token = tokenWithBearer.split(" ")[1];
     if (!token) {
       throw new AppError(401, "Unauthorized users!");
     }
@@ -27,32 +26,36 @@ const createBookingController = catchAsync(async (req, res,next:NextFunction) =>
       token as string,
       config.jwt_access_secret as string
     );
-    console.log(verifiedToken, "from boking contro");
 
     const { email } = verifiedToken as JwtPayload;
-    
-    // console.log("email",email)
     const userinfo = await User.findOne({ email: email });
-    const userID = userinfo?._id
-    // console.log(userinfo?._id ,"user id decoded")
+    const userID = userinfo?._id;
+
+    if (!userID) {
+      throw new AppError(401, "Unauthorized users!");
+    }
 
     const newData = {
       ...req.body,
       user: userinfo?._id,
     };
 
-    
-    const {startTime:startTimeFromBooking,endTime:endTimeFromBooking,date} = req.body
-    const bodyDate = date
-    
-    // check user booked same time or not
-    const bookingDataCheckTime = await Booking.find({user: userID})
-    const checkSameTimeSlot = bookingDataCheckTime.map((time)=>{
-      if(time.date === bodyDate && time.startTime === startTimeFromBooking && time.endTime === endTimeFromBooking ){
-        throw new AppError(401,"This time slot already booked by you")
-      }
-      console.log(time.date , bodyDate)
-    })
+    const { startTime: startTimeFromBooking, endTime: endTimeFromBooking, date: bodyDate, facility } = req.body;
+
+    // Check if the user has already booked the same time slot on the same date and same facility
+    const bookingDataCheckTime = await Booking.find({
+      user: userID,
+      date: bodyDate,
+      startTime: startTimeFromBooking,
+      endTime: endTimeFromBooking,
+      facility: facility, // Ensure facility is included in the check
+    });
+
+    if (bookingDataCheckTime.length > 0) {
+      throw new AppError(400, "This time slot is already booked by you.");
+    }
+
+    // Call the service to create the booking
     const result = await bookingServices.createBooking(newData);
 
     res.status(200).json({
@@ -61,11 +64,11 @@ const createBookingController = catchAsync(async (req, res,next:NextFunction) =>
       message: "Booking created successfully",
       data: result,
     });
-  }
   } catch (error) {
-    next(error)
+    next(error);
   }
 });
+
 const getAllBookingController = catchAsync(async (req, res) => {
   try {
     const result = await bookingServices.getAllBooking();
@@ -156,18 +159,57 @@ const deleteBookingController = catchAsync(async (req, res) => {
   });
 });
 
-const checkAvaiability = catchAsync(async (req, res) => {
-  let date = req.query.date || new Date().toISOString().split('T')[0];
-  const todaysDate = new Date().toISOString().split('T')[0];
+// const checkAvaiability = catchAsync(async (req, res) => {
+//   let date = req.query.date || new Date().toISOString().split('T')[0];
+//   const todaysDate = new Date().toISOString().split('T')[0];
 
-  if (date === todaysDate) {
-    date = todaysDate;
-  } else {
-    // Ensure date is formatted correctly
-    date = new Date(date).toISOString().split('T')[0];
+//   if (date === todaysDate) {
+//     date = todaysDate;
+//   } else {
+//     // Ensure date is formatted correctly
+//     date = new Date(date).toISOString().split('T')[0];
+//   }
+
+//   const result = await bookingServices.checkSlots(date);
+//   res.status(200).json({
+//     success: true,
+//     statusCode: 200,
+//     message: "Available slots here",
+//     data: result,
+//   });
+// });
+
+
+// -------------------with update slots----------------
+
+const checkAvailability = catchAsync(async (req, res) => {
+  let date = req.query.date || new Date().toISOString().split('T')[0];
+  const facility = req.query.facility;
+
+  // Validate facility ID
+  if (!facility) {
+    return res.status(400).json({
+      success: false,
+      statusCode: 400,
+      message: "Facility parameter is required",
+    });
   }
 
-  const result = await bookingServices.checkSlots(date);
+  // Validate date format
+  if (isNaN(new Date(date).getTime())) {
+    return res.status(400).json({
+      success: false,
+      statusCode: 400,
+      message: "Invalid date format",
+    });
+  }
+
+  // Ensure date is formatted correctly
+  date = new Date(date).toISOString().split('T')[0];
+
+  // Call the service to check slots based on date and facility
+  const result = await bookingServices.checkSlots(date, facility);
+
   res.status(200).json({
     success: true,
     statusCode: 200,
@@ -182,6 +224,6 @@ export const bookingControllers = {
   getAllBookingController,
   getSingleBookingController,
   deleteBookingController,
-  checkAvaiability,
+  checkAvailability,
   
 };
