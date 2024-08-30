@@ -137,6 +137,28 @@ const deleteBookings = async(id:string) =>{
     return result
 }
 
+const updateBookingIntoDB = async(id:string , payload:Partial<TBooking>) =>{
+
+  const {...updatedFields} = payload
+
+  const result = await Booking.findByIdAndUpdate(id,updatedFields,{new:true})
+ 
+  return result
+}
+
+const getSingleBookingById = async (id: string) => {
+  try {
+    const result = await Booking.findById(id);
+    if (!result) {
+      throw new Error('Booking not found');
+    }
+    return result;
+  } catch (error) {
+    console.error('Error in service:', error); // Log error for debugging
+    throw error; // Re-throw error to be caught in the controller
+  }
+};
+
 // const checkSlots = async (date: string) => {
 //     console.log("Checking availability for date:", date);
 //     const availableSlots = [];
@@ -311,5 +333,7 @@ export const bookingServices = {
     getAllBooking,
     deleteBookings,
     getSingleUserBookings,
-    checkSlots
+    checkSlots,
+    updateBookingIntoDB,
+    getSingleBookingById
 }

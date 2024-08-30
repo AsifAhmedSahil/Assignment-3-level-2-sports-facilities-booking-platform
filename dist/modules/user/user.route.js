@@ -11,5 +11,6 @@ const user_validation_1 = require("./user.validation");
 const router = express_1.default.Router();
 router.post("/signup", (0, ValidationSchema_1.default)(user_validation_1.userValidations.createUserValidation), user_controller_1.userControllers.createUser);
 router.get("/", user_controller_1.userControllers.getAllUser);
-router.get("/:email", user_controller_1.userControllers.getAllUser);
+router.get("/:email", user_controller_1.userControllers.getUserByEmail);
+router.put("/:email", user_controller_1.userControllers.updateUser);
 exports.userRouter = router;

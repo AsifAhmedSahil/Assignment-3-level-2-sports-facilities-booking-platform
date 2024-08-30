@@ -8,6 +8,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.userServices = void 0;
 const user_model_1 = require("./user.model");
@@ -22,10 +33,18 @@ const getAllUserFromDB = () => __awaiter(void 0, void 0, void 0, function* () {
     return result;
 });
 const getUserByEmailFromDB = (email) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(email, "from service******************");
     return yield user_model_1.User.findOne({ email: email });
+});
+const updateUserIntoDB = (email, payload) => __awaiter(void 0, void 0, void 0, function* () {
+    const updatedFields = __rest(payload, []);
+    console.log(payload, email);
+    const result = yield user_model_1.User.findOneAndUpdate({ email }, updatedFields, { new: true });
+    return result;
 });
 exports.userServices = {
     createUserIntoDB,
     getAllUserFromDB,
-    getUserByEmailFromDB
+    getUserByEmailFromDB,
+    updateUserIntoDB
 };

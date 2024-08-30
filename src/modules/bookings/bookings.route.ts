@@ -11,8 +11,10 @@ router.post("/",auth(USER_Role.user),validationSchema(bookingValidations.createB
 router.get("/",auth(USER_Role.admin),bookingControllers.getAllBookingController)
 // router.get("/",bookingControllers.getAllBookingController)
 router.get("/:user",auth(USER_Role.user),bookingControllers.getSingleBookingController)
+router.get("/:id",bookingControllers.getSingleBookingById)
 // router.get("/user",bookingControllers.getSingleBookingController)
-router.delete("/:id",auth(USER_Role.user,USER_Role.admin),bookingControllers.deleteBookingController) 
+router.delete("/:id",auth(USER_Role.user,USER_Role.admin),bookingControllers.deleteBookingController)
+router.put("/:id", bookingControllers.updateFacility); 
 // router.delete("/:id",bookingControllers.deleteBookingController) 
 
 

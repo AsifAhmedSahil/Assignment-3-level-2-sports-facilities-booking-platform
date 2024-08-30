@@ -61,6 +61,7 @@ const getSingleFacility = catchAsync(async (req, res) => {
 const updateFacility = catchAsync(async (req, res) => {
   try {
     const { id } = req.params;
+    console.log(req.body)
     const result = await facilitiesServices.updateFacilityIntoDB(id, req.body);
 
     res.status(200).json({

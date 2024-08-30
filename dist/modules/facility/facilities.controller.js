@@ -67,6 +67,7 @@ const getSingleFacility = (0, catchAsync_1.default)((req, res) => __awaiter(void
 const updateFacility = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
+        console.log(req.body);
         const result = yield facilities_service_1.facilitiesServices.updateFacilityIntoDB(id, req.body);
         res.status(200).json({
             success: true,

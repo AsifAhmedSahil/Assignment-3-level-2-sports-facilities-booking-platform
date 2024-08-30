@@ -45,6 +45,7 @@ const getAllUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, voi
 }));
 const getUserByEmail = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const email = req.params.email;
+    console.log(email);
     try {
         const user = yield user_service_1.userServices.getUserByEmailFromDB(email);
         if (!user) {
@@ -71,8 +72,30 @@ const getUserByEmail = (0, catchAsync_1.default)((req, res) => __awaiter(void 0,
         });
     }
 }));
+const updateUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { email } = req.params;
+        console.log(email);
+        const result = yield user_service_1.userServices.updateUserIntoDB(email, req.body);
+        res.status(200).json({
+            success: true,
+            statusCode: 200,
+            message: " User updated Successfully",
+            data: result,
+        });
+    }
+    catch (error) {
+        res.status(200).json({
+            success: false,
+            statusCode: 404,
+            message: "No Data Found",
+            data: [],
+        });
+    }
+}));
 exports.userControllers = {
     createUser,
     getAllUser,
-    getUserByEmail
+    getUserByEmail,
+    updateUser
 };

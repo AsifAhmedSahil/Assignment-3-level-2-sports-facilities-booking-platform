@@ -135,6 +135,36 @@ const getSingleBookingController = (0, catchAsync_1.default)((req, res) => __awa
         });
     }
 }));
+const getSingleBookingById = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    console.log('Booking ID:', id); // Check if the ID is correctly received
+    try {
+        const result = yield bookings_service_1.bookingServices.getSingleBookingById(id);
+        if (!result) {
+            return res.status(404).json({
+                success: false,
+                statusCode: 404,
+                message: "No Data Found",
+                data: [],
+            });
+        }
+        res.status(200).json({
+            success: true,
+            statusCode: 200,
+            message: "Booking retrieved Successfully",
+            data: result,
+        });
+    }
+    catch (error) {
+        console.error('Error retrieving booking:', error); // Log the error for debugging
+        res.status(500).json({
+            success: false,
+            statusCode: 500,
+            message: "Internal Server Error",
+            data: [],
+        });
+    }
+}));
 const deleteBookingController = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     const result = yield bookings_service_1.bookingServices.deleteBookings(id);
@@ -144,6 +174,28 @@ const deleteBookingController = (0, catchAsync_1.default)((req, res) => __awaite
         message: " Booking cancelled successfully",
         data: result,
     });
+}));
+const updateFacility = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { id } = req.params;
+        console.log(req.body, id);
+        const result = yield bookings_service_1.bookingServices.updateBookingIntoDB(id, req.body);
+        console.log(result);
+        res.status(200).json({
+            success: true,
+            statusCode: 200,
+            message: " Booking updated Successfully",
+            data: result,
+        });
+    }
+    catch (error) {
+        res.status(200).json({
+            success: false,
+            statusCode: 404,
+            message: "No Data Found",
+            data: [],
+        });
+    }
 }));
 // const checkAvaiability = catchAsync(async (req, res) => {
 //   let date = req.query.date || new Date().toISOString().split('T')[0];
@@ -200,4 +252,6 @@ exports.bookingControllers = {
     getSingleBookingController,
     deleteBookingController,
     checkAvailability,
+    updateFacility,
+    getSingleBookingById
 };
