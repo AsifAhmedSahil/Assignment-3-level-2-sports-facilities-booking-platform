@@ -58,7 +58,9 @@ const login = async (payload: TLoginUser) => {
   const jwtPayload = {
     email: user.email,
     role: user.role,
-    name:user.name
+    name:user.name,
+    phone:user.phone,
+    image:user.image
   };
   console.log(jwtPayload);
   console.log(config.jwt_refresh_secret);

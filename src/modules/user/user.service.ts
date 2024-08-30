@@ -19,12 +19,23 @@ const getAllUserFromDB = async() =>{
 }
 
 const getUserByEmailFromDB = async (email:any) => {
+    console.log(email,"from service******************")
     return await User.findOne({ email: email });
   };
 
+  const updateUserIntoDB = async(email:string , payload:Partial<TUser>) =>{
+
+    const {...updatedFields} = payload
+    console.log(payload,email)
+  
+    const result = await User.findOneAndUpdate({email},updatedFields,{new:true})
+   
+    return result
+}
 
 export const userServices = {
     createUserIntoDB,
     getAllUserFromDB,
-    getUserByEmailFromDB
+    getUserByEmailFromDB,
+    updateUserIntoDB
 }

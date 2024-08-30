@@ -33,6 +33,7 @@ const getAllUser = catchAsync(async (req, res) => {
 
 const getUserByEmail = catchAsync(async (req, res) => {
   const email = req.params.email;
+  console.log(email)
 
   try {
     const user = await userServices.getUserByEmailFromDB(email);
@@ -62,8 +63,32 @@ const getUserByEmail = catchAsync(async (req, res) => {
   }
 });
 
+const updateUser = catchAsync(async (req, res) => {
+  try {
+    const { email } = req.params;
+    console.log(email)
+    
+    const result = await userServices.updateUserIntoDB(email, req.body);
+
+    res.status(200).json({
+      success: true,
+      statusCode: 200,
+      message: " User updated Successfully",
+      data: result,
+    });
+  } catch (error) {
+    res.status(200).json({
+      success: false,
+      statusCode: 404,
+      message: "No Data Found",
+      data: [],
+    });
+}
+});
+
 export const userControllers = {
   createUser,
   getAllUser,
-  getUserByEmail
+  getUserByEmail,
+  updateUser
 };
