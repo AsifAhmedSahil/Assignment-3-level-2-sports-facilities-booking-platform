@@ -5,6 +5,7 @@ import { bookingControllers } from './modules/bookings/bookings.controller';
 import globalErrorHandler from './middlewares/globalErrorHandler';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
+import path from 'path';
 
 
 const app: Application = express();
@@ -12,6 +13,7 @@ const app: Application = express();
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({origin:['http://localhost:5173','https://fortune-sports.vercel.app']  , credentials:true}));
+app.use(express.static(path.join(__dirname, 'public')));
 app.use("/api",router)
 
 

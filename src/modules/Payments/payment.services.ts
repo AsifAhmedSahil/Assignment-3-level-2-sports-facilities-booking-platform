@@ -76,4 +76,5 @@ const confirmationService = async (transactionId: string, status: string) => {
 
 export const paymentServices = {
   confirmationService,
+  verifyPayment
 };

@@ -66,4 +66,5 @@ const confirmationService = (transactionId, status) => __awaiter(void 0, void 0,
 });
 exports.paymentServices = {
     confirmationService,
+    verifyPayment: Payments_util_1.verifyPayment
 };
