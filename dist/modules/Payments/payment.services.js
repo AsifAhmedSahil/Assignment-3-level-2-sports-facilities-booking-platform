@@ -42,7 +42,7 @@ const confirmationService = (transactionId, status) => __awaiter(void 0, void 0,
             }
         }
         // Read and modify HTML template
-        const filepath = (0, path_1.join)(__dirname, '../../views/confirmation.html');
+        const filepath = (0, path_1.join)(__dirname, '../../../public/confirmation.html');
         let template = (0, fs_1.readFileSync)(filepath, "utf-8");
         // Replace placeholders with booking details
         if (bookingDetails) {

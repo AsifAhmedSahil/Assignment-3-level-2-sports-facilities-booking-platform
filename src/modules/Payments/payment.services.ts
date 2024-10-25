@@ -48,7 +48,7 @@ const confirmationService = async (transactionId: string, status: string) => {
     }
 
     // Read and modify HTML template
-    const filepath = join(__dirname, '../../views/confirmation.html');
+    const filepath = join(__dirname, '../../../public/confirmation.html');
     let template = readFileSync(filepath, "utf-8");
 
     // Replace placeholders with booking details
