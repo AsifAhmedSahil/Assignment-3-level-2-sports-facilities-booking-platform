@@ -24,7 +24,7 @@ const initiatePayment = (paymentData) => __awaiter(void 0, void 0, void 0, funct
             tran_id: paymentData.transactionId,
             success_url: `https://batch-3-assignemnt-3.vercel.app/api/payment/confirmation/?transactionId=${paymentData.transactionId}&status=success`,
             fail_url: `https://batch-3-assignemnt-3.vercel.app/api/payment/confirmation/?status=failed`,
-            cancel_url: "http://localhost:5173/",
+            cancel_url: "https://fortune-sports.vercel.app",
             amount: paymentData.payableAmount,
             currency: "BDT",
             desc: "Merchant Registration Payment",

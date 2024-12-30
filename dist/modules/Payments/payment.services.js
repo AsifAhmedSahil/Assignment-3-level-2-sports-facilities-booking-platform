@@ -16,30 +16,57 @@ const Payments_util_1 = require("./Payments.util");
 const bookings_model_1 = require("../bookings/bookings.model");
 const confirmationService = (transactionId, status) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        // Verify payment
-        const verifyResponse = yield (0, Payments_util_1.verifyPayment)(transactionId);
         let bookingDetails = null;
-        if (verifyResponse && verifyResponse.pay_status === "Successful") {
-            // Retrieve booking details
-            const booking = yield bookings_model_1.Booking.findOne({ transactionId }).exec();
-            if (booking) {
-                // Extract booking details with type conversion
-                bookingDetails = {
-                    firstName: booking.firstName || "N/A",
-                    lastName: booking.lastName || "N/A",
-                    bookingDate: booking.date || "N/A",
-                    startTime: booking.startTime || "N/A",
-                    endTime: booking.endTime || "N/A",
-                    guestCount: typeof booking.guestCount === 'number' ? booking.guestCount : parseInt(booking.guestCount, 10) || 0,
-                    paymentStatus: "Paid",
-                };
-                // Update booking payment status
-                yield bookings_model_1.Booking.findOneAndUpdate({ transactionId }, { paymentStatus: "Paid" }, { new: true } // Optionally return the updated document
-                );
+        let message = ''; // Variable to hold the message
+        // Check if the status is 'success' or 'failed'
+        if (status === "success") {
+            // Verify payment
+            const verifyResponse = yield (0, Payments_util_1.verifyPayment)(transactionId);
+            if (verifyResponse && verifyResponse.pay_status === "Successful") {
+                // Retrieve booking details if payment is successful
+                const booking = yield bookings_model_1.Booking.findOne({ transactionId }).exec();
+                if (booking) {
+                    // Extract booking details with type conversion
+                    bookingDetails = {
+                        firstName: booking.firstName || "N/A",
+                        lastName: booking.lastName || "N/A",
+                        bookingDate: booking.date || "N/A",
+                        startTime: booking.startTime || "N/A",
+                        endTime: booking.endTime || "N/A",
+                        guestCount: typeof booking.guestCount === 'number' ? booking.guestCount : parseInt(booking.guestCount, 10) || 0,
+                        paymentStatus: "Paid",
+                    };
+                    // Update booking payment status to 'Paid'
+                    yield bookings_model_1.Booking.findOneAndUpdate({ transactionId }, { paymentStatus: "Paid" }, { new: true } // Optionally return the updated document
+                    );
+                    // Set success message
+                    message = "Thank you for your booking! Your reservation has been confirmed. Here are the details of your booking:";
+                }
+                else {
+                    console.warn(`No booking found with transactionId: ${transactionId}`);
+                    message = "Payment was successful, but we couldn't find your booking details. Please contact support.";
+                }
             }
             else {
-                console.warn(`No booking found with transactionId: ${transactionId}`);
+                throw new Error("Payment verification failed.");
             }
+        }
+        else if (status === "failed") {
+            // If payment failed, no need to retrieve booking details
+            // Set the response message to 'Payment Failed' or a retry message
+            bookingDetails = {
+                firstName: "N/A",
+                lastName: "N/A",
+                bookingDate: "N/A",
+                startTime: "N/A",
+                endTime: "N/A",
+                guestCount: 0,
+                paymentStatus: "Failed",
+            };
+            message = "Unfortunately, your payment has failed. Please try again or contact support.";
+        }
+        else {
+            throw new Error("Invalid status provided.");
         }
         // Read and modify HTML template
         const filepath = (0, path_1.join)(__dirname, '../../../public/confirmation.html');
@@ -55,8 +82,8 @@ const confirmationService = (transactionId, status) => __awaiter(void 0, void 0,
                 .replace("{{guestCount}}", bookingDetails.guestCount.toString())
                 .replace("{{paymentStatus}}", bookingDetails.paymentStatus);
         }
-        // Replace status message
-        template = template.replace("{{message}}", status);
+        // Replace the dynamic message
+        template = template.replace("{{message}}", message);
         return template;
     }
     catch (error) {
